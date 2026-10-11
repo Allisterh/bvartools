@@ -22,3 +22,11 @@ print(x, digits = max(3L, getOption("digits") - 3L), ...)
 - ...:
 
   further arguments passed to or from other methods.
+
+## Value
+
+A data frame of the model's specification, as printed, invisibly. It is
+the result of
+[`get_model_specifications`](https://rdrr.io/pkg/bayests/man/get_model_specifications.html)
+with the columns renamed for display and, where the model has no
+unmodelled variables, the columns `m` and `s` dropped.

@@ -2,7 +2,7 @@
 
 ## Authors
 
-- **Franz X. Mohr**. Author, maintainer.
+- **Franz X. Mohr**. Author, maintainer, copyright holder.
   [](https://orcid.org/0009-0003-8890-7781)
 
 ## Citation
@@ -12,13 +12,13 @@ Source:
 
 Franz X. Mohr (2026). bvartools: Bayesian Inference of Vector
 Autoregressive and Error Correction Models. R package version
-0.3.0.9000. doi:10.5281/zenodo.22736604
+1.0.0.9000. doi:10.5281/zenodo.22736604
 
     @Manual{,
       title = {{bvartools}: Bayesian Inference of Vector Autoregressive and Error Correction Models},
       author = {Franz X. Mohr},
       year = {2026},
-      note = {R package version 0.3.0.9000},
+      note = {R package version 1.0.0.9000},
       url = {https://CRAN.R-project.org/package=bvartools},
       doi = {10.5281/zenodo.22736604},
     }
@@ -54,9 +54,20 @@ in a time varying cointegration model Journal of Econometrics, 165(2),
       doi = {10.1016/j.jeconom.2011.07.007},
     }
 
+Franz X. Mohr (2026). BayesTS: Bayesian time series estimation in C++.
+doi:10.5281/zenodo.22722531
+
+    @Manual{,
+      title = {{BayesTS}: Bayesian time series estimation in C++},
+      author = {Franz X. Mohr},
+      year = {2026},
+      doi = {10.5281/zenodo.22722531},
+      url = {https://github.com/franzmohr/BayesTS},
+    }
+
 J. Durbin & S. J. Koopman (2002). A simple and efficient simulation
 smoother for state space time series analysis Biometrika 89(3),
-603--615.
+603--615. doi:10.1093/biomet/89.3.603
 
     @Article{,
       title = {A simple and efficient simulation smoother for state space time series analysis},
@@ -66,6 +77,7 @@ smoother for state space time series analysis Biometrika 89(3),
       volume = {89},
       number = {3},
       pages = {603--615},
+      doi = {10.1093/biomet/89.3.603},
     }
 
 E. I. George, D. Sun, & S. Ni (2008). Bayesian stochastic search for VAR
@@ -113,12 +125,12 @@ inference and comparison with ARCH models Review of Economic Studies
     }
 
 Y. Omori, S. Chib, N. Shephard, & J. Nakajima (2007). Stochastic
-volatiltiy with leverage. Fast and efficient likelihood inference
+volatility with leverage. Fast and efficient likelihood inference
 Journal of Econometrics 140(2), 425-449.
 doi:10.1016/j.jeconom.2006.07.008
 
     @Article{,
-      title = {Stochastic volatiltiy with leverage. Fast and efficient likelihood inference},
+      title = {Stochastic volatility with leverage. Fast and efficient likelihood inference},
       author = {Y. Omori and S. Chib and N. Shephard and J. Nakajima},
       year = {2007},
       journal = {Journal of Econometrics},

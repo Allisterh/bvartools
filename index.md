@@ -15,8 +15,8 @@ coverage](https://codecov.io/gh/franzmohr/bvartools/graph/badge.svg)](https://ap
 
 [![GitHub
 Sponsors](https://img.shields.io/badge/Sponsor-%E2%9D%A4-ea4aaa?logo=github-sponsors&logoColor=white)](https://github.com/sponsors/franzmohr)
-[![Buy Me a
-Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/franzmohr)
+[![Buy me coffee & AI
+tokens](https://img.shields.io/badge/Buy%20me%20coffee%20%26%20AI%20tokens-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/franzmohr)
 
 ## Overview
 
@@ -126,26 +126,17 @@ install.packages("bvartools")
 
 ### Development version
 
+The development version needs the development version of
+[bayests](https://github.com/franzmohr/bayests-r), the layer of generics
+and model files it shares with dfmtools and ucmtools, which is not on
+CRAN yet:
+
 ``` r
 
 # install.packages("devtools")
+devtools::install_github("franzmohr/bayests-r")
 devtools::install_github("franzmohr/bvartools")
 ```
-
-### With an AI coding assistant
-
-`inst/agents/` holds documentation written for coding assistants: the
-rules that keep a bvartools analysis from quietly going wrong, and
-complete examples that the test suite runs. The installed package
-carries it at `system.file("agents", package = "bvartools")`, matching
-its version. In Claude Code it installs as a plugin:
-
-``` R
-/plugin marketplace add franzmohr/bvartools
-/plugin install bvartools@bvartools
-```
-
-Other assistants can be pointed at `inst/agents/AGENTS.md`.
 
 ### Speed and R’s BLAS library
 
@@ -155,7 +146,7 @@ with many Linux builds is slow, and switching R to an optimised BLAS
 such as OpenBLAS speeds up estimation far more than any compiler
 setting. For a time varying parameter VAR with three variables and two
 lags, OpenBLAS halved the time of
-[`add_posterior_coefficients()`](https://franzmohr.github.io/bvartools/reference/add_posterior_coefficients.md)
+[`add_posterior_coefficients()`](https://rdrr.io/pkg/bayests/man/add_posterior_coefficients.html)
 and brought it level with the standalone BayesTS executable, while
 compiling with `-O3` instead of R’s default `-O2` made no difference.
 The BLAS belongs to the R installation rather than to the package, so it
@@ -197,19 +188,19 @@ stopCluster(cl)
 ```
 
 The script’s own session keeps all cores. To restrict it as well, set
-the variable before R starts, e.g.
-`OPENBLAS_NUM_THREADS=1 Rscript script.R`.
+the variable before R starts,
+e.g. `OPENBLAS_NUM_THREADS=1 Rscript script.R`.
 
 For lists of models none of this is needed:
-[`add_posterior_coefficients()`](https://franzmohr.github.io/bvartools/reference/add_posterior_coefficients.md),
-[`add_posterior_forecasts()`](https://franzmohr.github.io/bvartools/reference/add_posterior_forecasts.md)
+[`add_posterior_coefficients()`](https://rdrr.io/pkg/bayests/man/add_posterior_coefficients.html),
+[`add_posterior_forecasts()`](https://rdrr.io/pkg/bayests/man/add_posterior_forecasts.html)
 and
-[`add_posterior_loglik()`](https://franzmohr.github.io/bvartools/reference/add_posterior_loglik.md)
+[`add_posterior_loglik()`](https://rdrr.io/pkg/bayests/man/add_posterior_loglik.html)
 take an argument `cores` for objects of class ‘modellist’ and
 ‘expandingwindow’, start that many workers with one BLAS thread each and
 stop them again. For 16 TVP models, two lag orders over eight expanding
 windows, eight workers cut the time of
-[`add_posterior_coefficients()`](https://franzmohr.github.io/bvartools/reference/add_posterior_coefficients.md)
+[`add_posterior_coefficients()`](https://rdrr.io/pkg/bayests/man/add_posterior_coefficients.html)
 from 21 to 5 seconds.
 
 ``` r
@@ -262,7 +253,9 @@ e1 <- window(e1, end = c(1978, 4))
 plot(e1)
 ```
 
-![](reference/figures/README-data-1.png)
+![Three stacked time series panels showing the quarterly log-differences
+of West German fixed investment, disposable income and consumption
+expenditures from 1960 to 1978.](reference/figures/README-data-1.png)
 
 ### Setting up a model
 
@@ -512,7 +505,14 @@ coefficients.
 plot(bvar_est)
 ```
 
-![](reference/figures/README-unnamed-chunk-6-1.png)![](reference/figures/README-unnamed-chunk-6-2.png)![](reference/figures/README-unnamed-chunk-6-3.png)
+![Grid of histograms of the posterior draws of the coefficients on the
+lagged endogenous variables, one row per equation and one column per
+regressor.](reference/figures/README-unnamed-chunk-6-1.png)![Histograms
+of the posterior draws of the intercept of each of the three
+equations.](reference/figures/README-unnamed-chunk-6-2.png)![Grid of
+histograms of the posterior draws of the elements of the covariance
+matrix of the error
+term.](reference/figures/README-unnamed-chunk-6-3.png)
 
 Alternatively, the trace plot of the post-burnin draws can be drawn by
 adding the argument `type = "trace"`:
@@ -522,7 +522,14 @@ adding the argument `type = "trace"`:
 plot(bvar_est, type = "trace")
 ```
 
-![](reference/figures/README-unnamed-chunk-7-1.png)![](reference/figures/README-unnamed-chunk-7-2.png)![](reference/figures/README-unnamed-chunk-7-3.png)
+![Grid of trace plots of the post-burnin draws of the coefficients on
+the lagged endogenous variables, one row per equation and one column per
+regressor.](reference/figures/README-unnamed-chunk-7-1.png)![Trace plots
+of the post-burnin draws of the intercept of each of the three
+equations.](reference/figures/README-unnamed-chunk-7-2.png)![Grid of
+trace plots of the post-burnin draws of the elements of the covariance
+matrix of the error
+term.](reference/figures/README-unnamed-chunk-7-3.png)
 
 ### Thin results
 
@@ -556,19 +563,19 @@ limited to specification used in `add_forecast_input`.
 ``` r
 
 bvar_pred <- predict(bvar_est)
-```
-
-``` R
-## Warning in predict.bvarmodel(bvar_est): Argument 'n_ahead' is larger than the value in object$model$h.
-## Limiting the output to the latter.
-```
-
-``` r
 
 plot(bvar_pred)
 ```
 
-![](reference/figures/README-forecasts-1.png)![](reference/figures/README-forecasts-2.png)![](reference/figures/README-forecasts-3.png)
+![Fixed investment from 1960 to 1978 with a five-period forecast and its
+credible band attached to the end of the
+series.](reference/figures/README-forecasts-1.png)![Disposable income
+from 1960 to 1978 with a five-period forecast and its credible band
+attached to the end of the
+series.](reference/figures/README-forecasts-2.png)![Consumption
+expenditures from 1960 to 1978 with a five-period forecast and its
+credible band attached to the end of the
+series.](reference/figures/README-forecasts-3.png)
 
 ### Impulse response analysis
 
@@ -581,7 +588,9 @@ IR <- irf(bvar_est, impulse = "income", response = "cons", n_ahead = 8)
 plot(IR, main = "Forecast Error Impulse Response", xlab = "Period", ylab = "Response")
 ```
 
-![](reference/figures/README-feir-1.png)
+![Forecast error impulse response of consumption to a shock in income
+over eight periods, drawn as the posterior median with a credible band
+around it.](reference/figures/README-feir-1.png)
 
 #### Orthogonalised impulse response
 
@@ -592,7 +601,9 @@ OIR <- irf(bvar_est, impulse = "income", response = "cons", n_ahead = 8, type = 
 plot(OIR, main = "Orthogonalised Impulse Response", xlab = "Period", ylab = "Response")
 ```
 
-![](reference/figures/README-oir-1.png)
+![Orthogonalised impulse response of consumption to a shock in income
+over eight periods, drawn as the posterior median with a credible band
+around it.](reference/figures/README-oir-1.png)
 
 #### Generalised impulse response
 
@@ -603,7 +614,9 @@ GIR <- irf(bvar_est, impulse = "income", response = "cons", n_ahead = 8, type = 
 plot(GIR, main = "Generalised Impulse Response", xlab = "Period", ylab = "Response")
 ```
 
-![](reference/figures/README-gir-1.png)
+![Generalised impulse response of consumption to a shock in income over
+eight periods, drawn as the posterior median with a credible band around
+it.](reference/figures/README-gir-1.png)
 
 ### Forecast error variance decomposition
 
@@ -614,7 +627,10 @@ bvar_fevd <- fevd(bvar_est, response = "cons")
 plot(bvar_fevd, main = "FEVD of consumption")
 ```
 
-![](reference/figures/README-fevd-1.png)
+![Stacked bar chart of the forecast error variance decomposition of
+consumption over six periods, with the share of the variance attributed
+to investment, income and
+consumption.](reference/figures/README-fevd-1.png)
 
 ## References
 
@@ -690,5 +706,5 @@ Economics, 52*(2), 381-419.
     is what versions up to 0.2.1 always did. The draw is an exact Gibbs
     block rather than the Metropolis-within-Gibbs step of Koop et
     al. (2011);
-    [`?add_priors`](https://franzmohr.github.io/bvartools/reference/add_priors.md)
+    [`?add_priors.bvecmodel`](https://franzmohr.github.io/bvartools/reference/add_priors.bvecmodel.md)
     explains where the two models differ.

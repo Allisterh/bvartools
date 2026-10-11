@@ -78,8 +78,11 @@ print(x, digits = max(3L, getOption("digits") - 3L), ...)
   the maximum forecast horizon that is considered. If `NULL` (default),
   the forecast horizon of the models in `object` is used, which requires
   that
-  [`add_forecast_input`](https://franzmohr.github.io/bvartools/reference/add_forecast_input.md)
-  was already applied to them.
+  [`add_forecast_input`](https://rdrr.io/pkg/bayests/man/add_forecast_input.html)
+  was already applied to them. For models whose forecasts were
+  aggregated with
+  [`aggregate_forecasts`](https://franzmohr.github.io/bvartools/reference/aggregate_forecasts.md)
+  it is a number of years.
 
 - period:
 
@@ -156,6 +159,34 @@ numerics, which follow the convention of
 quarter of 2007. The periods, for which a forecast was made, are rounded
 to the frequency of the data of the models in `object`.
 
+Rounding places a forecast in the period of the data it falls into; it
+does not convert between frequencies. Forecasts made at a frequency
+other than that of the data are therefore refused: annual forecasts of a
+quarterly model, whose periods such as 2020 and 2021 would otherwise be
+read as the first quarters of those years and an annual growth rate
+scored as a quarterly one, or monthly forecasts of a quarterly model, of
+which three would fall into the same quarter. The frequency of the
+forecasts is read off the spacing of the periods within a publication
+and, where every publication forecasts a single period, off the position
+of the periods within the year.
+
+Annual forecasts are compared with models estimated on quarterly or
+monthly data by aggregating the forecasts of the models to annual
+figures with
+[`aggregate_forecasts`](https://franzmohr.github.io/bvartools/reference/aggregate_forecasts.md)
+first and passing the result as argument `object`. The periods of the
+forecasts are then read as years, while publications are still matched
+to the training samples at the frequency of the data, and `data_lag`
+still counts periods of the data. Horizon 1 is the year of the first
+period after the training sample, so that a forecast for the year of its
+publication is a forecast of horizon 1 and one for the year after it of
+horizon 2, whichever quarter it was published in. The realised values,
+against which the forecasts are scored, are the annual figures of the
+data of the models, which the aggregated forecasts of the models are
+scored against, too, so that
+[`add_forecast_errors`](https://rdrr.io/pkg/bayests/man/add_forecast_errors.html)
+does not need argument `test_sample`.
+
 In contrast to a model, an external forecast does not have a training
 sample. Therefore, each publication is matched to the training sample,
 which ends closest before the publication of the forecast, so that a
@@ -177,15 +208,15 @@ those publications is used.
 
 The resulting object mimics the structure of a model, which was
 estimated with the expanding window approach of
-[`use_expanding_window`](https://franzmohr.github.io/bvartools/reference/use_expanding_window.md),
+[`use_expanding_window`](https://rdrr.io/pkg/bayests/man/use_expanding_window.html),
 where each publication corresponds to one estimation window. It can be
 added to a list of models with
-[`combine_models`](https://franzmohr.github.io/bvartools/reference/combine_models.md)
+[`combine_models`](https://rdrr.io/pkg/bayests/man/combine_models.html)
 and the functions, which are applied to obtain posterior draws, are
 without effect for it. Since external forecasts are point forecasts,
 their forecast errors consist of a single draw. Accordingly, the
 credible bands of the out-of-sample statistics in
-[`selection_criteria`](https://franzmohr.github.io/bvartools/reference/selection_criteria.md)
+[`selection_criteria`](https://rdrr.io/pkg/bayests/man/selection_criteria.html)
 are degenerate and in-sample criteria are not available.
 
 External forecasts do not have to be estimated, so the functions, which
@@ -199,13 +230,15 @@ usual workflow to all elements of that list.
 Other model comparison:
 [`add_forecast_errors.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_forecast_errors.bvarmodel.md),
 [`add_forecast_errors.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/add_forecast_errors.bvecmodel.md),
-[`add_predictive_loglik()`](https://franzmohr.github.io/bvartools/reference/add_predictive_loglik.md),
-[`align_model_obs.modellist()`](https://franzmohr.github.io/bvartools/reference/align_model_obs.modellist.md),
-[`choose_best_model.selcritlist()`](https://franzmohr.github.io/bvartools/reference/choose_best_model.selcritlist.md),
+[`add_predictive_loglik.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_predictive_loglik.bvarmodel.md),
+[`add_predictive_loglik.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/add_predictive_loglik.bvecmodel.md),
+[`add_predictive_loglik.expandingwindow()`](https://franzmohr.github.io/bvartools/reference/add_predictive_loglik.expandingwindow.md),
+[`aggregate_forecasts()`](https://franzmohr.github.io/bvartools/reference/aggregate_forecasts.md),
+[`analysis_of_stored_models`](https://franzmohr.github.io/bvartools/reference/analysis_of_stored_models.md),
 [`plot_forecast_errors_by_period()`](https://franzmohr.github.io/bvartools/reference/plot_forecast_errors_by_period.md),
+[`pool_forecasts()`](https://franzmohr.github.io/bvartools/reference/pool_forecasts.md),
 [`selection_criteria.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/selection_criteria.bvarmodel.md),
-[`selection_criteria.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/selection_criteria.bvecmodel.md),
-[`selection_criteria.modellist()`](https://franzmohr.github.io/bvartools/reference/selection_criteria.modellist.md)
+[`selection_criteria.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/selection_criteria.bvecmodel.md)
 
 ## Examples
 

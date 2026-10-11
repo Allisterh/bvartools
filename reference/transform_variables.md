@@ -19,11 +19,13 @@ transform_variables(x, code)
 
   a named integer vector of transformation codes, one of `1:7` – see
   'Details'. Names must match columns of `x`; a column with no entry is
-  left untransformed (code `1`).
+  left untransformed (code `1`). For a single series `code` may also be
+  one unnamed code.
 
 ## Value
 
-A time-series object of the same shape as `x`.
+A time-series object of the same shape as `x`: a vector series for a
+vector series, and a matrix of series with the same columns otherwise.
 
 ## Details
 
@@ -59,10 +61,11 @@ The seven codes, applied column by column, are
 
 Codes `4:6` need a strictly positive series.
 
-A difference drops as many leading observations as its order – one for
-codes `2`, `5` and `7`, two for `3` and `6` – rather than shortening the
-series: those leading periods become `NA`, so every column keeps the
-time index of `x` and can still be combined with
+A transformation loses as many leading observations as it reaches back –
+one for codes `2` and `5`, two for `3`, `6` and `7`, the last being the
+difference of a growth rate that is itself taken over one period –
+rather than shortening the series: those leading periods become `NA`, so
+every column keeps the time index of `x` and can still be combined with
 [`ts.intersect`](https://rdrr.io/r/stats/ts.union.html) or passed to
 [`create_bvarmodel`](https://franzmohr.github.io/bvartools/reference/create_bvarmodel.md).
 
@@ -79,11 +82,13 @@ macroeconomic research. *Federal Reserve Bank of St. Louis Review,
 ## See also
 
 Other model set-up:
+[`add_dummy_variables.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_dummy_variables.bvarmodel.md),
 [`add_initial_values.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_initial_values.bvarmodel.md),
 [`add_initial_values.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/add_initial_values.bvecmodel.md),
+[`add_prior_options()`](https://franzmohr.github.io/bvartools/reference/add_prior_options.md),
 [`add_priors.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_priors.bvarmodel.md),
 [`add_priors.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/add_priors.bvecmodel.md),
-[`combine_models()`](https://franzmohr.github.io/bvartools/reference/combine_models.md),
+[`aggregation_weights()`](https://franzmohr.github.io/bvartools/reference/aggregation_weights.md),
 [`create_bvarmodel()`](https://franzmohr.github.io/bvartools/reference/create_bvarmodel.md),
 [`create_bvecmodel()`](https://franzmohr.github.io/bvartools/reference/create_bvecmodel.md),
 [`use_expanding_window.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/use_expanding_window.bvarmodel.md),

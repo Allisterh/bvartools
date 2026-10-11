@@ -19,9 +19,9 @@ predict(object, n_ahead = NULL, ...)
 
   number of steps ahead at which to predict. If `NULL` (default), every
   period simulated by
-  [`add_posterior_forecasts`](https://franzmohr.github.io/bvartools/reference/add_posterior_forecasts.md),
+  [`add_posterior_forecasts`](https://rdrr.io/pkg/bayests/man/add_posterior_forecasts.html),
   i.e. the horizon given to
-  [`add_forecast_input`](https://franzmohr.github.io/bvartools/reference/add_forecast_input.md).
+  [`add_forecast_input`](https://rdrr.io/pkg/bayests/man/add_forecast_input.html).
 
 - ...:
 
@@ -33,7 +33,11 @@ An object of class 'bvarprd', a list with element `fcst`, an \\h \times
 K \times S\\ array of the \\S\\ forecast draws, whose first two
 dimensions are named after the forecast periods and the endogenous
 variables, and element `y`, the endogenous variables of the training
-sample.
+sample. For a forecast that starts after the end of the sample, from
+argument `y_start` of
+[`add_forecast_input`](https://rdrr.io/pkg/bayests/man/add_forecast_input.html),
+the forecast periods are those after the start values, and `y` continues
+the training sample with the start values that lie after it.
 
 ## Details
 
@@ -50,12 +54,19 @@ analysis* (2nd ed.). Berlin: Springer.
 
 Other post-estimation analysis:
 [`add_sign_restrictions.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_sign_restrictions.bvarmodel.md),
+[`add_sign_zero_restrictions.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_sign_zero_restrictions.bvarmodel.md),
 [`fevd.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/fevd.bvarmodel.md),
 [`fevd.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/fevd.bvecmodel.md),
+[`historical_decomposition()`](https://franzmohr.github.io/bvartools/reference/historical_decomposition.md),
+[`historical_decomposition.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/historical_decomposition.bvarmodel.md),
 [`irf.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/irf.bvarmodel.md),
 [`irf.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/irf.bvecmodel.md),
+[`multipliers()`](https://franzmohr.github.io/bvartools/reference/multipliers.md),
+[`multipliers.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/multipliers.bvarmodel.md),
+[`multipliers.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/multipliers.bvecmodel.md),
 [`spillover.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/spillover.bvarmodel.md),
 [`spillover.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/spillover.bvecmodel.md),
+[`split_quantile_grid()`](https://franzmohr.github.io/bvartools/reference/split_quantile_grid.md),
 [`vec_to_var.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/vec_to_var.bvecmodel.md)
 
 ## Examples

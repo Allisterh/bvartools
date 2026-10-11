@@ -14,47 +14,22 @@ Luetkepohl (2006, ISBN: 9783540262398).
 Every step of an analysis takes a model object and returns it with
 something added, so the result of each call must be assigned back:
 `model <- add_initial_values(model)`. A model object is a list of class
-'bvarmodel' or 'bvecmodel' with the elements
-
-- `data`:
-
-  the data matrices, with the estimation sample in `data$train` (`y`,
-  `x` and `z` in SUR form).
-
-- `model`:
-
-  the specification: variables, lag orders, deterministic terms, error
-  and variable selection types, iterations and burn-in draws.
-
-- `priors`:
-
-  the prior hyperparameters, added by
-  [`add_priors`](https://franzmohr.github.io/bvartools/reference/add_priors.md).
-
-- `initial`:
-
-  the starting values of the sampler, added by
-  [`add_initial_values`](https://franzmohr.github.io/bvartools/reference/add_initial_values.md).
-
-- `posterior`:
-
-  the draws added by
-  [`add_posterior_coefficients`](https://franzmohr.github.io/bvartools/reference/add_posterior_coefficients.md)
-  and the later `add_posterior_*` functions.
-
-Posterior draws are stored as
-[`mcmc`](https://rdrr.io/pkg/coda/man/mcmc.html) objects with one row
-per draw and one column per parameter.
-[`bvar`](https://franzmohr.github.io/bvartools/reference/bvar.md) and
-[`bvec`](https://franzmohr.github.io/bvartools/reference/bvec.md), which
-collect the draws of a sampler written by the user, expect the
-transpose: one row per parameter and one column per draw.
+'bvarmodel' or 'bvecmodel' whose elements are `model`, the
+specification, `data`, `priors`, `initial` and `posterior`, the draws –
+stored as [`mcmc`](https://rdrr.io/pkg/coda/man/mcmc.html) objects with
+one row per draw and one column per parameter.
 
 Passing a vector to an argument such as `p` or `r` creates one model per
 specification in a list of class 'modellist', and
-[`use_expanding_window`](https://franzmohr.github.io/bvartools/reference/use_expanding_window.md)
+[`use_expanding_window`](https://rdrr.io/pkg/bayests/man/use_expanding_window.html)
 creates a list of class 'expandingwindow'. The functions of the workflow
 accept these lists as well and apply to each model in turn.
+
+[`bvartools_model`](https://franzmohr.github.io/bvartools/reference/bvartools_model.md)
+describes the whole object element by element: what each one holds,
+which step adds it, how the draws are laid out and which path of a model
+file each corresponds to. It is the page to read before reaching into
+the object by hand.
 
 ## Workflow of a VAR model
 
@@ -65,18 +40,18 @@ accept these lists as well and apply to each model in turn.
     [`transform_variables`](https://franzmohr.github.io/bvartools/reference/transform_variables.md)
     applies the transformation codes of FRED-MD and FRED-QD beforehand.
 
-2.  [`add_priors`](https://franzmohr.github.io/bvartools/reference/add_priors.md)
-    adds prior hyperparameters. Its arguments `coef` and `sigma` are
-    named lists without defaults, and neither may be empty: `coef` needs
-    `v_i` or `minnesota`, and `sigma` the elements of the chosen
-    `error`, which are `df` and `scale` for `"wishart"` and `shape` and
-    `rate` for `"gamma"` and `"ald"`. Structural models cannot use the
-    Wishart prior.
+2.  [`add_priors`](https://rdrr.io/pkg/bayests/man/add_priors.html) adds
+    prior hyperparameters. Its arguments `coef` and `sigma` are named
+    lists without defaults, and neither may be empty: `coef` needs `v_i`
+    or `minnesota`, and `sigma` the elements of the chosen `error`,
+    which are `df` and `scale` for `"wishart"` and `shape` and `rate`
+    for `"gamma"` and `"ald"`. Structural models cannot use the Wishart
+    prior.
 
-3.  [`add_initial_values`](https://franzmohr.github.io/bvartools/reference/add_initial_values.md)
+3.  [`add_initial_values`](https://rdrr.io/pkg/bayests/man/add_initial_values.html)
     adds starting values, by default from a least squares estimate.
 
-4.  [`add_posterior_coefficients`](https://franzmohr.github.io/bvartools/reference/add_posterior_coefficients.md)
+4.  [`add_posterior_coefficients`](https://rdrr.io/pkg/bayests/man/add_posterior_coefficients.html)
     runs the sampler.
     [`plot`](https://franzmohr.github.io/bvartools/reference/plot.bvarmodel.md),
     [`summary`](https://franzmohr.github.io/bvartools/reference/summary.bvarmodel.md)
@@ -84,15 +59,13 @@ accept these lists as well and apply to each model in turn.
     [`thin`](https://franzmohr.github.io/bvartools/reference/thin.bvarmodel.md)
     inspect and thin the draws.
 
-5.  [`add_forecast_input`](https://franzmohr.github.io/bvartools/reference/add_forecast_input.md)
+5.  [`add_forecast_input`](https://rdrr.io/pkg/bayests/man/add_forecast_input.html)
     followed by
-    [`add_posterior_forecasts`](https://franzmohr.github.io/bvartools/reference/add_posterior_forecasts.md)
+    [`add_posterior_forecasts`](https://rdrr.io/pkg/bayests/man/add_posterior_forecasts.html)
     simulates forecasts, which
     [`predict`](https://franzmohr.github.io/bvartools/reference/predict.bvarmodel.md)
-    summarises.
-    [`irf`](https://franzmohr.github.io/bvartools/reference/irf.md),
-    [`fevd`](https://franzmohr.github.io/bvartools/reference/fevd.md)
-    and
+    summarises. [`irf`](https://rdrr.io/pkg/bayests/man/irf.html),
+    [`fevd`](https://rdrr.io/pkg/bayests/man/fevd.html) and
     [`spillover`](https://franzmohr.github.io/bvartools/reference/spillover.md)
     compute impulse responses, variance decompositions and connectedness
     measures.
@@ -104,7 +77,7 @@ The type of model is fixed in
 and
 [`create_bvecmodel`](https://franzmohr.github.io/bvartools/reference/create_bvecmodel.md),
 and the priors that fit it in
-[`add_priors`](https://franzmohr.github.io/bvartools/reference/add_priors.md):
+[`add_priors`](https://rdrr.io/pkg/bayests/man/add_priors.html):
 
 - `error` sets the error covariance: `"wishart"` (default), `"gamma"`
   for a diagonal covariance, `"sv"` for stochastic volatility and, for
@@ -121,7 +94,7 @@ and the priors that fit it in
   `"bvs"` (Korobilis, 2013).
 
 - A Minnesota prior is requested with `coef = list(minnesota = ...)` in
-  [`add_priors`](https://franzmohr.github.io/bvartools/reference/add_priors.md).
+  [`add_priors`](https://rdrr.io/pkg/bayests/man/add_priors.html).
 
 [`minnesota_prior`](https://franzmohr.github.io/bvartools/reference/minnesota_prior.md),
 [`ssvs_prior`](https://franzmohr.github.io/bvartools/reference/ssvs_prior.md)
@@ -137,7 +110,7 @@ additionally takes the cointegration rank `r` and whether constant,
 trend and seasonal terms are `"restricted"` to the cointegration space
 or `"unrestricted"`. Priors on the cointegration space go into the
 `coint` argument of
-[`add_priors`](https://franzmohr.github.io/bvartools/reference/add_priors.md).
+[`add_priors`](https://rdrr.io/pkg/bayests/man/add_priors.html).
 Forecasts, impulse responses, variance decompositions, spillovers and
 sign restrictions are computed for a 'bvarmodel', so an estimated VEC
 model is first converted to its VAR representation in levels with
@@ -145,44 +118,44 @@ model is first converted to its VAR representation in levels with
 
 ## Identification
 
-[`irf`](https://franzmohr.github.io/bvartools/reference/irf.md) and
-[`fevd`](https://franzmohr.github.io/bvartools/reference/fevd.md)
-provide forecast error, orthogonalised and generalised impulse responses
-through their `type` argument.
-[`add_sign_restrictions`](https://franzmohr.github.io/bvartools/reference/add_sign_restrictions.md)
+[`irf`](https://rdrr.io/pkg/bayests/man/irf.html) and
+[`fevd`](https://rdrr.io/pkg/bayests/man/fevd.html) provide forecast
+error, orthogonalised and generalised impulse responses through their
+`type` argument.
+[`add_sign_restrictions`](https://rdrr.io/pkg/bayests/man/add_sign_restrictions.html)
 identifies the shocks of an estimated model by the signs of their
 impulse responses instead.
 
 ## Model comparison and forecast evaluation
 
 - In sample:
-  [`add_posterior_loglik`](https://franzmohr.github.io/bvartools/reference/add_posterior_loglik.md),
+  [`add_posterior_loglik`](https://rdrr.io/pkg/bayests/man/add_posterior_loglik.html),
   then
-  [`selection_criteria`](https://franzmohr.github.io/bvartools/reference/selection_criteria.md)
+  [`selection_criteria`](https://rdrr.io/pkg/bayests/man/selection_criteria.html)
   (LL, AIC, BIC, HQ, WAIC, LOOIC), then
-  [`choose_best_model`](https://franzmohr.github.io/bvartools/reference/choose_best_model.md).
+  [`choose_best_model`](https://rdrr.io/pkg/bayests/man/choose_best_model.html).
 
 - Out of sample:
-  [`use_expanding_window`](https://franzmohr.github.io/bvartools/reference/use_expanding_window.md)
+  [`use_expanding_window`](https://rdrr.io/pkg/bayests/man/use_expanding_window.html)
   before the priors are added, the usual estimation and forecasting
   steps, then
-  [`add_forecast_errors`](https://franzmohr.github.io/bvartools/reference/add_forecast_errors.md)
+  [`add_forecast_errors`](https://rdrr.io/pkg/bayests/man/add_forecast_errors.html)
   with the test sample and
-  [`selection_criteria`](https://franzmohr.github.io/bvartools/reference/selection_criteria.md)
+  [`selection_criteria`](https://rdrr.io/pkg/bayests/man/selection_criteria.html)
   for MAFE and RMSFE.
   [`plot_forecast_errors_by_period`](https://franzmohr.github.io/bvartools/reference/plot_forecast_errors_by_period.md)
   plots the errors over time.
 
-- [`combine_models`](https://franzmohr.github.io/bvartools/reference/combine_models.md)
+- [`combine_models`](https://rdrr.io/pkg/bayests/man/combine_models.html)
   and
-  [`align_model_obs`](https://franzmohr.github.io/bvartools/reference/align_model_obs.md)
+  [`align_model_obs`](https://rdrr.io/pkg/bayests/man/align_model_obs.html)
   put differently specified models on a common sample, and
   [`create_external_forecast`](https://franzmohr.github.io/bvartools/reference/create_external_forecast.md)
   brings forecasts produced elsewhere into the same comparison.
 
 ## User-written samplers
 
-[`add_posterior_coefficients`](https://franzmohr.github.io/bvartools/reference/add_posterior_coefficients.md)
+[`add_posterior_coefficients`](https://rdrr.io/pkg/bayests/man/add_posterior_coefficients.html)
 accepts a `posterior_function` that replaces the built-in sampler. For a
 sampler written from scratch the package exports its building blocks,
 among them
@@ -201,17 +174,17 @@ workflow applies.
 
 ## Storage
 
-[`write_to_hdf5`](https://franzmohr.github.io/bvartools/reference/write_to_hdf5.md)
+[`write_to_hdf5`](https://rdrr.io/pkg/bayests/man/write_to_hdf5.html)
 and
-[`read_model_from_hdf5`](https://franzmohr.github.io/bvartools/reference/read_model_from_hdf5.md)
+[`read_model_from_hdf5`](https://rdrr.io/pkg/bayests/man/read_model_from_hdf5.html)
 save and restore a model with its draws, one per file or several side by
 side in groups listed by
-[`list_models_in_hdf5`](https://franzmohr.github.io/bvartools/reference/list_models_in_hdf5.md).
+[`read_model_groups`](https://rdrr.io/pkg/bayests/man/read_model_groups.html).
 The files follow the format of the BayesTS command line, so a model can
 also be estimated there and read back.
-[`read_models_from_folder`](https://franzmohr.github.io/bvartools/reference/read_models_from_folder.md)
+[`read_models_from_folder`](https://rdrr.io/pkg/bayests/man/read_models_from_folder.html)
 and
-[`read_expanding_window_model_from_folder`](https://franzmohr.github.io/bvartools/reference/read_expanding_window_model_from_folder.md)
+[`read_expanding_window_model_from_folder`](https://rdrr.io/pkg/bayests/man/read_expanding_window_model_from_folder.html)
 read a whole folder.
 
 ## Common mistakes
@@ -220,16 +193,16 @@ read a whole folder.
   added.
 
 - Calling
-  [`add_posterior_forecasts`](https://franzmohr.github.io/bvartools/reference/add_posterior_forecasts.md)
+  [`add_posterior_forecasts`](https://rdrr.io/pkg/bayests/man/add_posterior_forecasts.html)
   without
-  [`add_forecast_input`](https://franzmohr.github.io/bvartools/reference/add_forecast_input.md).
+  [`add_forecast_input`](https://rdrr.io/pkg/bayests/man/add_forecast_input.html).
   The `n_ahead` given there is also the longest horizon `predict`
   returns; a longer one is shortened to it.
 
 - Calling
-  [`selection_criteria`](https://franzmohr.github.io/bvartools/reference/selection_criteria.md)
+  [`selection_criteria`](https://rdrr.io/pkg/bayests/man/selection_criteria.html)
   for in-sample criteria without
-  [`add_posterior_loglik`](https://franzmohr.github.io/bvartools/reference/add_posterior_loglik.md).
+  [`add_posterior_loglik`](https://rdrr.io/pkg/bayests/man/add_posterior_loglik.html).
 
 - Calling `predict`, `irf` or `fevd` on a 'bvecmodel' instead of the
   result of
@@ -307,17 +280,19 @@ Useful links:
 
 - <https://github.com/franzmohr/bvartools>
 
+- <https://franzmohr.github.io/bvartools/>
+
 - Report bugs at <https://github.com/franzmohr/bvartools/issues>
 
 ## Author
 
 **Maintainer**: Franz X. Mohr <franz.x.mohr@outlook.com>
-([ORCID](https://orcid.org/0009-0003-8890-7781))
+([ORCID](https://orcid.org/0009-0003-8890-7781)) \[copyright holder\]
 
 Authors:
 
 - Franz X. Mohr <franz.x.mohr@outlook.com>
-  ([ORCID](https://orcid.org/0009-0003-8890-7781))
+  ([ORCID](https://orcid.org/0009-0003-8890-7781)) \[copyright holder\]
 
 ## Examples
 

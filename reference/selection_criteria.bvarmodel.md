@@ -6,7 +6,7 @@ Calculates model selection criteria for an object of class 'bvarmodel'.
 
 ``` r
 # S3 method for class 'bvarmodel'
-selection_criteria(object, ci = 0.95, ...)
+selection_criteria(object, ci = 0.95, plugin = c("mean", "best"), ...)
 ```
 
 ## Arguments
@@ -20,6 +20,16 @@ selection_criteria(object, ci = 0.95, ...)
   a numeric between 0 and 1 specifying the probability of the credible
   band. Defaults to 0.95.
 
+- plugin:
+
+  the point at which the deviance of `AIC`, `BIC` and `HQ` is evaluated.
+  `"mean"`, the default, uses the posterior mean of the parameters, for
+  a VEC model the best approximation of the model's rank to the
+  posterior mean of \\\Pi\\. `"best"` uses the draw whose log-likelihood
+  is the highest the chain visited, which is closer to the maximum these
+  corrections are derived for, but grows with the length of the chain
+  and is therefore comparable only across models drawn equally long.
+
 - ...:
 
   further arguments passed to or from other methods.
@@ -31,22 +41,37 @@ with the element `model` and one data frame per criterion. If the model
 contains `posterior$loglik`, these are `LL`, `AIC`, `BIC`, `HQ`, `WAIC`
 and `LOOIC`, each with the columns `mean`, `median`, `qlower` and
 `qupper`, where bands that do not apply are `NA`. If it contains
-`posterior$forecast_errors`, these are `FE`, `AFE` and `RSFE`, the
+`posterior$forecast$errors`, these are `FE`, `AFE` and `RSFE`, the
 forecast errors and their absolute and root squared values, with the
-columns `variable`, `h`, `mean`, `median`, `qlower` and `qupper`.
+columns `variable`, `h`, `mean`, `median`, `qlower` and `qupper`. For
+`RSFE` only `mean` is a statistic of its own, the root of the mean
+squared error. Its median and quantiles are those of the squared errors,
+rooted, and so differ from `AFE`'s only by the interpolation between
+neighbouring draws that
+[`quantile`](https://rdrr.io/r/stats/quantile.html) and
+[`median`](https://rdrr.io/r/stats/median.html) do – which, the root of
+an average of squares being at least the average of the roots, can only
+raise them. They add nothing to `AFE`'s. If it contains
+`posterior$forecast$loglik`, the score of its forecast against
+`data$test$y`, there is `LPL`, the log predictive likelihood: the log of
+the mean of the draws of each scored period's predictive density, summed
+over the periods. Attribute `"terms"` holds those per period and `"nse"`
+their numerical standard error.
 
 ## See also
 
 Other model comparison:
 [`add_forecast_errors.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_forecast_errors.bvarmodel.md),
 [`add_forecast_errors.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/add_forecast_errors.bvecmodel.md),
-[`add_predictive_loglik()`](https://franzmohr.github.io/bvartools/reference/add_predictive_loglik.md),
-[`align_model_obs.modellist()`](https://franzmohr.github.io/bvartools/reference/align_model_obs.modellist.md),
-[`choose_best_model.selcritlist()`](https://franzmohr.github.io/bvartools/reference/choose_best_model.selcritlist.md),
+[`add_predictive_loglik.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_predictive_loglik.bvarmodel.md),
+[`add_predictive_loglik.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/add_predictive_loglik.bvecmodel.md),
+[`add_predictive_loglik.expandingwindow()`](https://franzmohr.github.io/bvartools/reference/add_predictive_loglik.expandingwindow.md),
+[`aggregate_forecasts()`](https://franzmohr.github.io/bvartools/reference/aggregate_forecasts.md),
+[`analysis_of_stored_models`](https://franzmohr.github.io/bvartools/reference/analysis_of_stored_models.md),
 [`create_external_forecast()`](https://franzmohr.github.io/bvartools/reference/create_external_forecast.md),
 [`plot_forecast_errors_by_period()`](https://franzmohr.github.io/bvartools/reference/plot_forecast_errors_by_period.md),
-[`selection_criteria.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/selection_criteria.bvecmodel.md),
-[`selection_criteria.modellist()`](https://franzmohr.github.io/bvartools/reference/selection_criteria.modellist.md)
+[`pool_forecasts()`](https://franzmohr.github.io/bvartools/reference/pool_forecasts.md),
+[`selection_criteria.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/selection_criteria.bvecmodel.md)
 
 ## Examples
 
@@ -86,45 +111,45 @@ sel
 #> Log-likelihood
 #> 
 #>            Mean Median Quantile (2.5%) Quantile (97.5%)
-#>  Model 1 -511.2 -511.8          -515.5           -507.8
-#>  Model 2 -499.1 -499.2          -501.8           -495.5
+#>  Model 1 -510.4 -509.3          -517.9             -506
+#>  Model 2 -499.9 -500.5          -503.0             -496
 #> 
 #> 
 #> Akaike Information Criterion (AIC)
 #> 
 #>          Mean Median Quantile (2.5%) Quantile (97.5%)
-#>  Model 1 1040   1040                                 
+#>  Model 1 1041   1041                                 
 #>  Model 2 1031   1031                                 
 #> 
 #> 
 #> Bayesian Information Criterion (BIC)
 #> 
 #>          Mean Median Quantile (2.5%) Quantile (97.5%)
-#>  Model 1 1085   1085                                 
+#>  Model 1 1086   1086                                 
 #>  Model 2 1098   1098                                 
 #> 
 #> 
 #> Hannan-Quinn Criterion (HQ)
 #> 
 #>          Mean Median Quantile (2.5%) Quantile (97.5%)
-#>  Model 1 1058   1058                                 
+#>  Model 1 1059   1059                                 
 #>  Model 2 1058   1058                                 
 #> 
 #> 
 #> Widely Applicable Information Criterion (WAIC)
 #> 
 #>          Mean Median Quantile (2.5%) Quantile (97.5%)
-#>  Model 1 1047   1047           980.3             1114
-#>  Model 2 1024   1024           959.7             1089
+#>  Model 1 1050   1050           982.1             1117
+#>  Model 2 1042   1042           964.4             1120
 #> 
-#> Periods with a pointwise log-likelihood variance above 0.4, which makes the correction of WAIC unreliable, in models 1 (9), 2 (16).
+#> Periods with a pointwise log-likelihood variance above 0.4, which makes the correction of WAIC unreliable, in models 1 (15), 2 (21).
 #> 
 #> 
 #> Leave-One-Out Information Criterion (LOOIC)
 #> 
 #>          Mean Median Quantile (2.5%) Quantile (97.5%)
-#>  Model 1 1040   1040           977.5             1102
-#>  Model 2 1018   1018           956.2             1080
+#>  Model 1 1045   1045           979.1             1110
+#>  Model 2 1028   1028           960.6             1095
 #> 
 #> Influential periods, whose importance sampling is unreliable, in models 1 (89), 2 (89), counted as a Pareto k above 0.
 

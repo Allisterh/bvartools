@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">bvartools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,7 +59,7 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'bvarmodel'</span></span>
-<span><span class="fu"><a href="selection_criteria.html">selection_criteria</a></span><span class="op">(</span><span class="va">object</span>, ci <span class="op">=</span> <span class="fl">0.95</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/pkg/bayests/man/selection_criteria.html" class="external-link">selection_criteria</a></span><span class="op">(</span><span class="va">object</span>, ci <span class="op">=</span> <span class="fl">0.95</span>, plugin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"best"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -75,6 +75,16 @@
 Defaults to 0.95.</p></dd>
 
 
+<dt id="arg-plugin">plugin<a class="anchor" aria-label="anchor" href="#arg-plugin"></a></dt>
+<dd><p>the point at which the deviance of <code>AIC</code>, <code>BIC</code> and
+<code>HQ</code> is evaluated. <code>"mean"</code>, the default, uses the posterior mean
+of the parameters, for a VEC model the best approximation of the model's rank
+to the posterior mean of \(\Pi\). <code>"best"</code> uses the draw whose
+log-likelihood is the highest the chain visited, which is closer to the
+maximum these corrections are derived for, but grows with the length of the
+chain and is therefore comparable only across models drawn equally long.</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>further arguments passed to or from other methods.</p></dd>
 
@@ -86,23 +96,35 @@ element <code>model</code> and one data frame per criterion. If the model contai
 <code>posterior$loglik</code>, these are <code>LL</code>, <code>AIC</code>, <code>BIC</code>, <code>HQ</code>,
 <code>WAIC</code> and <code>LOOIC</code>, each with the columns <code>mean</code>, <code>median</code>,
 <code>qlower</code> and <code>qupper</code>, where bands that do not apply are <code>NA</code>. If it
-contains <code>posterior$forecast_errors</code>, these are <code>FE</code>, <code>AFE</code> and
+contains <code>posterior$forecast$errors</code>, these are <code>FE</code>, <code>AFE</code> and
 <code>RSFE</code>, the forecast errors and their absolute and root squared values, with the
 columns <code>variable</code>, <code>h</code>, <code>mean</code>, <code>median</code>, <code>qlower</code> and
-<code>qupper</code>.</p>
+<code>qupper</code>. For <code>RSFE</code> only <code>mean</code> is a statistic of its own, the root
+of the mean squared error. Its median and quantiles are those of the squared
+errors, rooted, and so differ from <code>AFE</code>'s only by the interpolation
+between neighbouring draws that <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></code> and
+<code><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></code> do – which, the root of an average of squares
+being at least the average of the roots, can only raise them. They add
+nothing to <code>AFE</code>'s. If it contains <code>posterior$forecast$loglik</code>, the score of its
+forecast against <code>data$test$y</code>, there is <code>LPL</code>, the log predictive
+likelihood: the log of the mean of the draws of each scored period's predictive
+density, summed over the periods. Attribute <code>"terms"</code> holds those per period
+and <code>"nse"</code> their numerical standard error.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other model comparison:
 <code><a href="add_forecast_errors.bvarmodel.html">add_forecast_errors.bvarmodel()</a></code>,
 <code><a href="add_forecast_errors.bvecmodel.html">add_forecast_errors.bvecmodel()</a></code>,
-<code><a href="add_predictive_loglik.html">add_predictive_loglik()</a></code>,
-<code><a href="align_model_obs.modellist.html">align_model_obs.modellist()</a></code>,
-<code><a href="choose_best_model.selcritlist.html">choose_best_model.selcritlist()</a></code>,
+<code><a href="add_predictive_loglik.bvarmodel.html">add_predictive_loglik.bvarmodel()</a></code>,
+<code><a href="add_predictive_loglik.bvecmodel.html">add_predictive_loglik.bvecmodel()</a></code>,
+<code><a href="add_predictive_loglik.expandingwindow.html">add_predictive_loglik.expandingwindow()</a></code>,
+<code><a href="aggregate_forecasts.html">aggregate_forecasts()</a></code>,
+<code><a href="analysis_of_stored_models.html">analysis_of_stored_models</a></code>,
 <code><a href="create_external_forecast.html">create_external_forecast()</a></code>,
 <code><a href="plot_forecast_errors_by_period.html">plot_forecast_errors_by_period()</a></code>,
-<code><a href="selection_criteria.bvecmodel.html">selection_criteria.bvecmodel()</a></code>,
-<code><a href="selection_criteria.modellist.html">selection_criteria.modellist()</a></code></p></div>
+<code><a href="pool_forecasts.html">pool_forecasts()</a></code>,
+<code><a href="selection_criteria.bvecmodel.html">selection_criteria.bvecmodel()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -118,21 +140,21 @@ columns <code>variable</code>, <code>h</code>, <code>mean</code>, <code>median</
 <span class="r-in"><span><span class="co"># Number of iterations and burnin should be much higher.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add priors</span></span></span>
-<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_priors.html">add_priors</a></span><span class="op">(</span><span class="va">model</span>,</span></span>
+<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bayests/man/add_priors.html" class="external-link">add_priors</a></span><span class="op">(</span><span class="va">model</span>,</span></span>
 <span class="r-in"><span>                    coef <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>v_i <span class="op">=</span> <span class="fl">1</span>, v_i_det <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">10</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                    sigma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>df <span class="op">=</span> <span class="st">"k"</span>, scale <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add initial values</span></span></span>
-<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_initial_values.html">add_initial_values</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bayests/man/add_initial_values.html" class="external-link">add_initial_values</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Obtain posterior draws </span></span></span>
-<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_posterior_coefficients.html">add_posterior_coefficients</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bayests/man/add_posterior_coefficients.html" class="external-link">add_posterior_coefficients</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add log-likelihoods</span></span></span>
-<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_posterior_loglik.html">add_posterior_loglik</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bayests/man/add_posterior_loglik.html" class="external-link">add_posterior_loglik</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Calculate selection criteria</span></span></span>
-<span class="r-in"><span><span class="va">sel</span> <span class="op">&lt;-</span> <span class="fu"><a href="selection_criteria.html">selection_criteria</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bayests/man/selection_criteria.html" class="external-link">selection_criteria</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">sel</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ------------------------------------------</span>
@@ -142,45 +164,45 @@ columns <code>variable</code>, <code>h</code>, <code>mean</code>, <code>median</
 <span class="r-out co"><span class="r-pr">#&gt;</span> Log-likelihood</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            Mean Median Quantile (2.5%) Quantile (97.5%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 1 -511.2 -511.8          -515.5           -507.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 2 -499.1 -499.2          -501.8           -495.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 1 -510.4 -509.3          -517.9             -506</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 2 -499.9 -500.5          -503.0             -496</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Akaike Information Criterion (AIC)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Mean Median Quantile (2.5%) Quantile (97.5%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 1 1040   1040                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 1 1041   1041                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Model 2 1031   1031                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bayesian Information Criterion (BIC)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Mean Median Quantile (2.5%) Quantile (97.5%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 1 1085   1085                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 1 1086   1086                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Model 2 1098   1098                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hannan-Quinn Criterion (HQ)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Mean Median Quantile (2.5%) Quantile (97.5%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 1 1058   1058                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 1 1059   1059                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Model 2 1058   1058                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Widely Applicable Information Criterion (WAIC)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Mean Median Quantile (2.5%) Quantile (97.5%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 1 1047   1047           980.3             1114</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 2 1024   1024           959.7             1089</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 1 1050   1050           982.1             1117</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 2 1042   1042           964.4             1120</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Periods with a pointwise log-likelihood variance above 0.4, which makes the correction of WAIC unreliable, in models 1 (9), 2 (16).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Periods with a pointwise log-likelihood variance above 0.4, which makes the correction of WAIC unreliable, in models 1 (15), 2 (21).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Leave-One-Out Information Criterion (LOOIC)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Mean Median Quantile (2.5%) Quantile (97.5%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 1 1040   1040           977.5             1102</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 2 1018   1018           956.2             1080</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 1 1045   1045           979.1             1110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Model 2 1028   1028           960.6             1095</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Influential periods, whose importance sampling is unreliable, in models 1 (89), 2 (89), counted as a Pareto k above 0.</span>
 <span class="r-in"><span></span></span>

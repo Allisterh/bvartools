@@ -7,7 +7,12 @@ correction models.
 
 ``` r
 # S3 method for class 'bvecmodel'
-add_posterior_coefficients(object, posterior_function = NULL, ...)
+add_posterior_coefficients(
+  object,
+  posterior_function = NULL,
+  chains = NULL,
+  ...
+)
 ```
 
 ## Arguments
@@ -17,14 +22,26 @@ add_posterior_coefficients(object, posterior_function = NULL, ...)
   an object of class 'bvecmodel', usually, a result of a call to
   [`create_bvecmodel`](https://franzmohr.github.io/bvartools/reference/create_bvecmodel.md)
   in combination with
-  [`add_priors`](https://franzmohr.github.io/bvartools/reference/add_priors.md)
-  and
-  [`add_initial_values`](https://franzmohr.github.io/bvartools/reference/add_initial_values.md).
+  [`add_priors`](https://rdrr.io/pkg/bayests/man/add_priors.html) and
+  [`add_initial_values`](https://rdrr.io/pkg/bayests/man/add_initial_values.html).
 
 - posterior_function:
 
   the function to be applied to the model in argument `object`. If
   `NULL` (default), internal functions are used.
+
+- chains:
+
+  the number of chains to simulate. If `NULL` (default), the value in
+  `object$model$chains` is used, and one chain when there is none. Each
+  chain is the same simulation with a seed of its own – the first with
+  the seed of the model, so that one chain draws what it always has –
+  and the chains are pooled, one after the other, in the draws of
+  `posterior`, so that every later step uses all of them. Their number,
+  when above one, is stored in `object$model$chains`, and
+  [`chain_diagnostics`](https://rdrr.io/pkg/bayests/man/chain_diagnostics.html)
+  compares them. A `posterior_function` is called once per chain. Not
+  available for discounted models, whose posterior is not a chain.
 
 - ...:
 
@@ -38,7 +55,8 @@ elements hold the draws after burn-in as
 per draw and one column per parameter, in element `coeffs`: `beta`, the
 cointegration coefficients, \\K\_\beta r\\ columns or \\T K\_\beta r\\
 for time varying cointegration, `a`, the loadings and the remaining
-coefficients, and the draws of the error term as described in
+coefficients, and the draws of the error term and of a volatility break
+as described in
 [`add_posterior_coefficients.bvarmodel`](https://franzmohr.github.io/bvartools/reference/add_posterior_coefficients.bvarmodel.md).
 
 ## Details
@@ -66,17 +84,16 @@ draws are obtained based on the SUR form of the VEC model, the
 structural coefficients are drawn jointly with the other coefficients.
 
 The internal samplers draw with the seed in `object$model$seed`, which
-[`add_initial_values`](https://franzmohr.github.io/bvartools/reference/add_initial_values.md)
-sets and
-[`add_seed`](https://franzmohr.github.io/bvartools/reference/add_seed.md)
+[`add_initial_values`](https://rdrr.io/pkg/bayests/man/add_initial_values.html)
+sets and [`add_seed`](https://rdrr.io/pkg/bayests/man/add_seed.html)
 replaces. R's random number generator is set to that seed, with R's
 default kinds, for the simulation and put back as it was afterwards. A
 call of [`set.seed()`](https://rdrr.io/r/base/Random.html) between
-[`add_initial_values()`](https://franzmohr.github.io/bvartools/reference/add_initial_values.md)
+[`add_initial_values()`](https://rdrr.io/pkg/bayests/man/add_initial_values.html)
 and this function therefore does not change the draws. A model without a
 seed draws from R's generator as it stands. A `posterior_function` is
 called as it is and decides itself what to do with the seed; see
-[`bayests_posterior`](https://franzmohr.github.io/bvartools/reference/bayests_posterior.md).
+[`bayests_posterior`](https://rdrr.io/pkg/bayests/man/bayests_posterior.html).
 
 A sampler that cannot run raises its error rather than returning
 something. The message names what about the input it could not work
@@ -105,6 +122,9 @@ Korobilis, D. (2013). VAR forecasting using Bayesian variable selection.
 
 ## See also
 
+[`bvartools_model`](https://franzmohr.github.io/bvartools/reference/bvartools_model.md)
+describes the object this returns, element by element.
+
 Other posterior simulation:
 [`add_forecast_input.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_forecast_input.bvarmodel.md),
 [`add_forecast_input.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/add_forecast_input.bvecmodel.md),
@@ -113,8 +133,7 @@ Other posterior simulation:
 [`add_posterior_forecasts.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/add_posterior_forecasts.bvecmodel.md),
 [`add_posterior_loglik.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_posterior_loglik.bvarmodel.md),
 [`add_posterior_loglik.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/add_posterior_loglik.bvecmodel.md),
-[`add_seed()`](https://franzmohr.github.io/bvartools/reference/add_seed.md),
-[`bayests_posterior()`](https://franzmohr.github.io/bvartools/reference/bayests_posterior.md),
+[`add_seed.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_seed.bvarmodel.md),
 [`bvar()`](https://franzmohr.github.io/bvartools/reference/bvar.md),
 [`bvec()`](https://franzmohr.github.io/bvartools/reference/bvec.md),
 [`predict.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/predict.bvecmodel.md)

@@ -18,7 +18,7 @@ vec_to_var(object, ...)
   an object of class `'bvecmodel'`, usually, the result of a call to
   [`create_bvecmodel`](https://franzmohr.github.io/bvartools/reference/create_bvecmodel.md),
   optionally already estimated with
-  [`add_posterior_coefficients`](https://franzmohr.github.io/bvartools/reference/add_posterior_coefficients.md).
+  [`add_posterior_coefficients`](https://rdrr.io/pkg/bayests/man/add_posterior_coefficients.html).
 
 - ...:
 
@@ -75,9 +75,8 @@ term.
 Note also that the elements `priors` and `initial` of the input object
 are not carried over, because they describe the coefficients of the VEC
 model. Use
-[`add_priors`](https://franzmohr.github.io/bvartools/reference/add_priors.md)
-and
-[`add_initial_values`](https://franzmohr.github.io/bvartools/reference/add_initial_values.md)
+[`add_priors`](https://rdrr.io/pkg/bayests/man/add_priors.html) and
+[`add_initial_values`](https://rdrr.io/pkg/bayests/man/add_initial_values.html)
 if the resulting model should be estimated in its VAR form. The same
 applies to the results of variable selection algorithms: a coefficient
 of the VAR representation is the sum of multiple coefficients of the VEC
@@ -117,13 +116,20 @@ analysis* (2nd ed.). Berlin: Springer.
 
 Other post-estimation analysis:
 [`add_sign_restrictions.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_sign_restrictions.bvarmodel.md),
+[`add_sign_zero_restrictions.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_sign_zero_restrictions.bvarmodel.md),
 [`fevd.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/fevd.bvarmodel.md),
 [`fevd.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/fevd.bvecmodel.md),
+[`historical_decomposition()`](https://franzmohr.github.io/bvartools/reference/historical_decomposition.md),
+[`historical_decomposition.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/historical_decomposition.bvarmodel.md),
 [`irf.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/irf.bvarmodel.md),
 [`irf.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/irf.bvecmodel.md),
+[`multipliers()`](https://franzmohr.github.io/bvartools/reference/multipliers.md),
+[`multipliers.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/multipliers.bvarmodel.md),
+[`multipliers.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/multipliers.bvecmodel.md),
 [`predict.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/predict.bvarmodel.md),
 [`spillover.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/spillover.bvarmodel.md),
-[`spillover.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/spillover.bvecmodel.md)
+[`spillover.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/spillover.bvecmodel.md),
+[`split_quantile_grid()`](https://franzmohr.github.io/bvartools/reference/split_quantile_grid.md)
 
 ## Examples
 

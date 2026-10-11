@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">bvartools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,7 +59,13 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'bvarmodel'</span></span>
-<span><span class="fu"><a href="add_posterior_forecasts.html">add_posterior_forecasts</a></span><span class="op">(</span><span class="va">object</span>, forecast_states <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/pkg/bayests/man/add_posterior_forecasts.html" class="external-link">add_posterior_forecasts</a></span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  forecast_states <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  scenario <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  forecast_quantile <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -68,7 +74,7 @@
 
 <dl><dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
 <dd><p>an object of class 'bvarmodel', usually, the result of a call
-to <code><a href="add_posterior_coefficients.html">add_posterior_coefficients</a></code> and <code><a href="add_forecast_input.html">add_forecast_input</a></code>.</p></dd>
+to <code><a href="https://rdrr.io/pkg/bayests/man/add_posterior_coefficients.html" class="external-link">add_posterior_coefficients</a></code> and <code><a href="https://rdrr.io/pkg/bayests/man/add_forecast_input.html" class="external-link">add_forecast_input</a></code>.</p></dd>
 
 
 <dt id="arg-forecast-states">forecast_states<a class="anchor" aria-label="anchor" href="#arg-forecast-states"></a></dt>
@@ -83,25 +89,66 @@ the value in <code>object$model$forecast_states</code> is used, and <code>"simul
 there is none. Models with constant coefficients and volatility are unaffected.</p></dd>
 
 
+<dt id="arg-scenario">scenario<a class="anchor" aria-label="anchor" href="#arg-scenario"></a></dt>
+<dd><p>an optional data frame with columns <code>period</code>, <code>variable</code> and
+<code>value</code>, one row per value a variable is held at in a forecast period: a
+conditional forecast. <code>period</code> counts forecast periods from one and <code>variable</code>
+is a name or a position among the endogenous variables. It is stored in
+<code>data$forecast$constraints</code>, which is where the forecast reads it from; set that
+element to <code>NULL</code> to forecast without it again. Available for models with constant
+coefficients and <code>error = "wishart"</code> or <code>"gamma"</code>, and for a grid of quantiles.</p></dd>
+
+
+<dt id="arg-forecast-quantile">forecast_quantile<a class="anchor" aria-label="anchor" href="#arg-forecast-quantile"></a></dt>
+<dd><p>for a grid of quantiles (see <code>quantile_grid</code> in
+<code><a href="create_bvarmodel.html">create_bvarmodel</a></code>), a level in \((0, 1)\) every draw of the forecast is taken
+at, which gives quantile paths rather than draws from the predictive distribution: the
+paths of Chavleishvili and Manganelli (2019), whose difference with and without a
+<code>scenario</code> is an impulse response at that quantile. If <code>NULL</code> (default), the
+value in <code>object$model$forecast_quantile</code> is used, and the levels are drawn at random
+when there is none. Zero removes a stored one.</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>arguments passed forward to method.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>The object in <code>object</code> with <code>posterior$forecast</code> added, a
+    <p>The object in <code>object</code> with <code>posterior$forecast$forecasts</code> added, a
 <code><a href="https://rdrr.io/pkg/coda/man/mcmc.html" class="external-link">mcmc</a></code> object with one row per draw and \(Kh\) columns, stacked by
 period: the \(K\) variables of the first forecast period, then those of the second,
-and so on. <code><a href="predict.bvarmodel.html">predict</a></code> summarises them. A
+and so on. <code>posterior$forecast</code> is the group everything the forecast periods
+produce hangs below, the <code>errors</code> of <code><a href="https://rdrr.io/pkg/bayests/man/add_forecast_errors.html" class="external-link">add_forecast_errors</a></code> beside
+these. <code><a href="predict.bvarmodel.html">predict</a></code> summarises them. A
 <code>forecast_states</code> that was given is stored in <code>model$forecast_states</code>.</p>
 <p>Simulating the volatility forward needs the variance of the log-volatility
-innovations, <code>posterior$u_sigma_inv$sigma</code>, which <code><a href="add_posterior_coefficients.html">add_posterior_coefficients</a></code>
+innovations, <code>posterior$u_sigma_inv$sigma</code>, which <code><a href="https://rdrr.io/pkg/bayests/man/add_posterior_coefficients.html" class="external-link">add_posterior_coefficients</a></code>
 stores. A stochastic volatility model fitted with an earlier version of the package
 lacks it and stops with an error unless <code>forecast_states = "hold"</code>.</p>
     </div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>A model with a seed, see <code><a href="https://rdrr.io/pkg/bayests/man/add_seed.html" class="external-link">add_seed</a></code>, draws its forecast
+from a seed derived from its own, so two forecasts of it give the same draws however
+R's generator stands. A model without one draws from R's generator as it stands.</p>
+<p>A forecast that starts after the end of the estimation sample, from argument
+<code>y_start</code> of <code><a href="https://rdrr.io/pkg/bayests/man/add_forecast_input.html" class="external-link">add_forecast_input</a></code>, takes its lags from the start values
+and its coefficients from the sample. <strong>Three things that start from the last period
+of the sample are refused for it</strong>: a <code>scenario</code>, which is drawn from the end of the
+sample; <code>forecast_states = "simulate"</code> for a model with time varying coefficients or
+stochastic volatility, which would not step the states through the periods up to the start
+values (<code>"hold"</code> is available); and the discounted model, for the same reason.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p>Chavleishvili, S., &amp; Manganelli, S. (2019). Forecasting and stress testing with quantile
+vector autoregression. <em>ECB Working Paper</em>, 2330.</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>Other posterior simulation:
+    <div class="dont-index"><p><code><a href="bvartools_model.html">bvartools_model</a></code> describes the object this returns, element by element.</p>
+<p>Other posterior simulation:
 <code><a href="add_forecast_input.bvarmodel.html">add_forecast_input.bvarmodel()</a></code>,
 <code><a href="add_forecast_input.bvecmodel.html">add_forecast_input.bvecmodel()</a></code>,
 <code><a href="add_posterior_coefficients.bvarmodel.html">add_posterior_coefficients.bvarmodel()</a></code>,
@@ -109,8 +156,7 @@ lacks it and stops with an error unless <code>forecast_states = "hold"</code>.</
 <code><a href="add_posterior_forecasts.bvecmodel.html">add_posterior_forecasts.bvecmodel()</a></code>,
 <code><a href="add_posterior_loglik.bvarmodel.html">add_posterior_loglik.bvarmodel()</a></code>,
 <code><a href="add_posterior_loglik.bvecmodel.html">add_posterior_loglik.bvecmodel()</a></code>,
-<code><a href="add_seed.html">add_seed()</a></code>,
-<code><a href="bayests_posterior.html">bayests_posterior()</a></code>,
+<code><a href="add_seed.bvarmodel.html">add_seed.bvarmodel()</a></code>,
 <code><a href="bvar.html">bvar()</a></code>,
 <code><a href="bvec.html">bvec()</a></code>,
 <code><a href="predict.bvecmodel.html">predict.bvecmodel()</a></code></p></div>
@@ -129,21 +175,21 @@ lacks it and stops with an error unless <code>forecast_states = "hold"</code>.</
 <span class="r-in"><span><span class="co"># Number of iterations and burnin should be much higher.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add priors</span></span></span>
-<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_priors.html">add_priors</a></span><span class="op">(</span><span class="va">model</span>,</span></span>
+<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bayests/man/add_priors.html" class="external-link">add_priors</a></span><span class="op">(</span><span class="va">model</span>,</span></span>
 <span class="r-in"><span>                    coef <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>v_i <span class="op">=</span> <span class="fl">1</span>, v_i_det <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">10</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                    sigma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>df <span class="op">=</span> <span class="st">"k"</span>, scale <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add initial values</span></span></span>
-<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_initial_values.html">add_initial_values</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bayests/man/add_initial_values.html" class="external-link">add_initial_values</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Obtain posterior draws </span></span></span>
-<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_posterior_coefficients.html">add_posterior_coefficients</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bayests/man/add_posterior_coefficients.html" class="external-link">add_posterior_coefficients</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add data used for forecast calculation</span></span></span>
-<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_forecast_input.html">add_forecast_input</a></span><span class="op">(</span><span class="va">model</span>, n_ahead <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bayests/man/add_forecast_input.html" class="external-link">add_forecast_input</a></span><span class="op">(</span><span class="va">model</span>, n_ahead <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add forecasts</span></span></span>
-<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_posterior_forecasts.html">add_posterior_forecasts</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bayests/man/add_posterior_forecasts.html" class="external-link">add_posterior_forecasts</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

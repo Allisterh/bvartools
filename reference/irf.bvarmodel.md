@@ -80,7 +80,9 @@ irf(
 
   integer. Index of the period, for which the IR should be generated.
   Only used for TVP or SV models. Default is `NULL`, so that the
-  posterior draws of the last time period are used.
+  posterior draws of the last time period are used. With `type = "sign"`
+  the default is the period the restrictions were imposed in, and
+  another period is refused, since the rotations do not identify it.
 
 - impact:
 
@@ -131,7 +133,7 @@ structural types not for any other.
 Sign restricted impulse responses \\\Theta^r_i\\ are calculated as
 \\\Theta^r_i = \Phi_i P Q\\, where \\P\\ is the lower triangular
 Choleski decomposition of \\\Sigma\\ and \\Q\\ the rotation that
-[`add_sign_restrictions`](https://franzmohr.github.io/bvartools/reference/add_sign_restrictions.md)
+[`add_sign_restrictions`](https://rdrr.io/pkg/bayests/man/add_sign_restrictions.html)
 accepted for that draw. Draws for which no admissible rotation was found
 are left out, so the responses cover fewer draws than the posterior
 holds and the credible interval is one over the set of models the
@@ -166,12 +168,19 @@ in linear multivariate models. *Economics Letters, 58*, 17-29.
 
 Other post-estimation analysis:
 [`add_sign_restrictions.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_sign_restrictions.bvarmodel.md),
+[`add_sign_zero_restrictions.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_sign_zero_restrictions.bvarmodel.md),
 [`fevd.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/fevd.bvarmodel.md),
 [`fevd.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/fevd.bvecmodel.md),
+[`historical_decomposition()`](https://franzmohr.github.io/bvartools/reference/historical_decomposition.md),
+[`historical_decomposition.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/historical_decomposition.bvarmodel.md),
 [`irf.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/irf.bvecmodel.md),
+[`multipliers()`](https://franzmohr.github.io/bvartools/reference/multipliers.md),
+[`multipliers.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/multipliers.bvarmodel.md),
+[`multipliers.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/multipliers.bvecmodel.md),
 [`predict.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/predict.bvarmodel.md),
 [`spillover.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/spillover.bvarmodel.md),
 [`spillover.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/spillover.bvecmodel.md),
+[`split_quantile_grid()`](https://franzmohr.github.io/bvartools/reference/split_quantile_grid.md),
 [`vec_to_var.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/vec_to_var.bvecmodel.md)
 
 ## Examples

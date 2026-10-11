@@ -15,7 +15,7 @@ add_posterior_loglik(object, ...)
 - object:
 
   an object of class 'bvarmodel', usually, the result of a call to
-  [`add_posterior_coefficients`](https://franzmohr.github.io/bvartools/reference/add_posterior_coefficients.md).
+  [`add_posterior_coefficients`](https://rdrr.io/pkg/bayests/man/add_posterior_coefficients.html).
 
 - ...:
 
@@ -27,10 +27,13 @@ The object in `object` with `posterior$loglik` added, a
 [`mcmc`](https://rdrr.io/pkg/coda/man/mcmc.html) object with one row per
 draw and one column per period of the training sample, holding the
 pointwise log-likelihood that
-[`selection_criteria`](https://franzmohr.github.io/bvartools/reference/selection_criteria.md)
+[`selection_criteria`](https://rdrr.io/pkg/bayests/man/selection_criteria.html)
 uses.
 
 ## See also
+
+[`bvartools_model`](https://franzmohr.github.io/bvartools/reference/bvartools_model.md)
+describes the object this returns, element by element.
 
 Other posterior simulation:
 [`add_forecast_input.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_forecast_input.bvarmodel.md),
@@ -40,8 +43,7 @@ Other posterior simulation:
 [`add_posterior_forecasts.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_posterior_forecasts.bvarmodel.md),
 [`add_posterior_forecasts.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/add_posterior_forecasts.bvecmodel.md),
 [`add_posterior_loglik.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/add_posterior_loglik.bvecmodel.md),
-[`add_seed()`](https://franzmohr.github.io/bvartools/reference/add_seed.md),
-[`bayests_posterior()`](https://franzmohr.github.io/bvartools/reference/bayests_posterior.md),
+[`add_seed.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_seed.bvarmodel.md),
 [`bvar()`](https://franzmohr.github.io/bvartools/reference/bvar.md),
 [`bvec()`](https://franzmohr.github.io/bvartools/reference/bvec.md),
 [`predict.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/predict.bvecmodel.md)

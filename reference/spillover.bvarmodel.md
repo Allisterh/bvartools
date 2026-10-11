@@ -31,8 +31,8 @@ spillover(
   which is made of the impulse responses of periods 0 to \\H - 1\\.
   Defaults to 10, the horizon of Diebold and Yilmaz (2012). The table
   therefore corresponds to the rows of period \\H - 1\\ of
-  [`fevd`](https://franzmohr.github.io/bvartools/reference/fevd.md),
-  which counts its periods from the impact period.
+  [`fevd`](https://rdrr.io/pkg/bayests/man/fevd.html), which counts its
+  periods from the impact period.
 
 - type:
 
@@ -56,7 +56,10 @@ spillover(
 
   integer. Index of the period, for which the measures should be
   generated. Only used for TVP or SV models. Default is `NULL`, so that
-  the posterior draws of the last time period are used.
+  the posterior draws of the last time period are used. With
+  `type = "sign"` the default is the period the restrictions were
+  imposed in, and another period is refused, since the rotations do not
+  identify it.
 
 - impact:
 
@@ -118,7 +121,7 @@ Choleski factor of \\\Sigma\\, adds up by construction and depends on
 the ordering of the variables, which is what the generalised version of
 Diebold and Yilmaz (2012) avoids. Under `type = "sign"` it uses the
 Choleski factor rotated by what
-[`add_sign_restrictions`](https://franzmohr.github.io/bvartools/reference/add_sign_restrictions.md)
+[`add_sign_restrictions`](https://rdrr.io/pkg/bayests/man/add_sign_restrictions.html)
 accepted for that draw, leaving out the draws no rotation was found for.
 Under `type = "custom"` it uses the matrix supplied in argument `impact`
 in place of that factor and is otherwise the orthogonalised case, the
@@ -164,8 +167,7 @@ interval, which the original point estimate based version does not have.
 
 Objects of class `'bvecmodel'` have to be transformed with
 [`vec_to_var`](https://franzmohr.github.io/bvartools/reference/vec_to_var.md)
-first, as for
-[`fevd`](https://franzmohr.github.io/bvartools/reference/fevd.md).
+first, as for [`fevd`](https://rdrr.io/pkg/bayests/man/fevd.html).
 
 ## References
 
@@ -187,12 +189,19 @@ in linear multivariate models. *Economics Letters, 58*, 17–29.
 
 Other post-estimation analysis:
 [`add_sign_restrictions.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_sign_restrictions.bvarmodel.md),
+[`add_sign_zero_restrictions.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_sign_zero_restrictions.bvarmodel.md),
 [`fevd.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/fevd.bvarmodel.md),
 [`fevd.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/fevd.bvecmodel.md),
+[`historical_decomposition()`](https://franzmohr.github.io/bvartools/reference/historical_decomposition.md),
+[`historical_decomposition.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/historical_decomposition.bvarmodel.md),
 [`irf.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/irf.bvarmodel.md),
 [`irf.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/irf.bvecmodel.md),
+[`multipliers()`](https://franzmohr.github.io/bvartools/reference/multipliers.md),
+[`multipliers.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/multipliers.bvarmodel.md),
+[`multipliers.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/multipliers.bvecmodel.md),
 [`predict.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/predict.bvarmodel.md),
 [`spillover.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/spillover.bvecmodel.md),
+[`split_quantile_grid()`](https://franzmohr.github.io/bvartools/reference/split_quantile_grid.md),
 [`vec_to_var.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/vec_to_var.bvecmodel.md)
 
 ## Examples
@@ -230,10 +239,10 @@ sp
 #> Draws:         100 
 #> 
 #>        invest income cons from
-#> invest   82.2    6.6 11.2  5.9
-#> income    8.3   66.6 25.1 11.1
-#> cons     11.7   29.4 58.9 13.7
-#> to        6.7   12.0 12.1 30.7
+#> invest   84.0    6.3  9.7  5.3
+#> income    7.6   67.5 24.9 10.8
+#> cons     10.3   28.7 61.0 13.0
+#> to        6.0   11.7 11.5 29.2
 #> 
 #> Rows are responses, columns are shocks. The corner is the total index.
 #> Means only; see $total, $from, $to and $net for credible intervals.

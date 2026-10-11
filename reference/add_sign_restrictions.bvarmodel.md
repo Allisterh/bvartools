@@ -14,12 +14,6 @@ add_sign_restrictions(
   period = NULL,
   ...
 )
-
-# S3 method for class 'expandingwindow'
-add_sign_restrictions(object, ...)
-
-# S3 method for class 'modellist'
-add_sign_restrictions(object, ...)
 ```
 
 ## Arguments
@@ -110,19 +104,24 @@ shock that no row mentions is left as it is drawn, since nothing in the
 restrictions distinguishes one rotation of it from another; only the
 restricted shocks should be interpreted.
 
-Only sign restrictions are supported. Zero restrictions on the impact
-responses cannot be imposed by rejection, because the set of rotations
-that satisfies them has probability zero, and need the algorithm of
-Arias et al. (2018) instead.
+Only sign restrictions are supported. A zero restriction cannot be
+imposed by rejection, because the set of rotations that satisfies one
+has probability zero, so no number of tries finds a member of it. Use
+[`add_sign_zero_restrictions`](https://rdrr.io/pkg/bayests/man/add_sign_zero_restrictions.html),
+which draws rotations that satisfy the zero restrictions by construction
+and reweights them.
 
 The accepted rotations are added to the object as element `q` of its
 posterior draws, from where
-[`irf`](https://franzmohr.github.io/bvartools/reference/irf.md),
-[`fevd`](https://franzmohr.github.io/bvartools/reference/fevd.md) and
+[`irf`](https://rdrr.io/pkg/bayests/man/irf.html),
+[`fevd`](https://rdrr.io/pkg/bayests/man/fevd.html) and
 [`spillover`](https://franzmohr.github.io/bvartools/reference/spillover.md)
 use them under `type = "sign"`.
 
-The result depends on the state of the random number generator, so
+The rotations are drawn with a seed derived from the model's own, see
+[`add_seed`](https://rdrr.io/pkg/bayests/man/add_seed.html), so that a
+model with a seed gives the same rotations however R's generator stands.
+A model without one draws from R's generator as it stands, and
 [`set.seed`](https://rdrr.io/r/base/Random.html) is needed to reproduce
 it.
 
@@ -146,13 +145,20 @@ Economics, 52*(2), 381-419.
 ## See also
 
 Other post-estimation analysis:
+[`add_sign_zero_restrictions.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_sign_zero_restrictions.bvarmodel.md),
 [`fevd.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/fevd.bvarmodel.md),
 [`fevd.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/fevd.bvecmodel.md),
+[`historical_decomposition()`](https://franzmohr.github.io/bvartools/reference/historical_decomposition.md),
+[`historical_decomposition.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/historical_decomposition.bvarmodel.md),
 [`irf.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/irf.bvarmodel.md),
 [`irf.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/irf.bvecmodel.md),
+[`multipliers()`](https://franzmohr.github.io/bvartools/reference/multipliers.md),
+[`multipliers.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/multipliers.bvarmodel.md),
+[`multipliers.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/multipliers.bvecmodel.md),
 [`predict.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/predict.bvarmodel.md),
 [`spillover.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/spillover.bvarmodel.md),
 [`spillover.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/spillover.bvecmodel.md),
+[`split_quantile_grid()`](https://franzmohr.github.io/bvartools/reference/split_quantile_grid.md),
 [`vec_to_var.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/vec_to_var.bvecmodel.md)
 
 ## Examples

@@ -20,9 +20,13 @@ create_bvecmodel(
   tvp = FALSE,
   varsel = "none",
   algorithm = NULL,
+  delta_beta = 1,
+  delta_sigma = 1,
   iterations = 20000,
   burnin = 2000,
-  thin = 1
+  thin = 1,
+  volatility_break = NULL,
+  volatility_scales = 3
 )
 ```
 
@@ -106,14 +110,22 @@ create_bvecmodel(
   (default), standard algorithms will be used. See 'Details' for
   available non-standard options.
 
+- delta_beta, delta_sigma:
+
+  numeric discount factors in \\(0, 1\]\\ of the discounted model, the
+  first governing the coefficients and the second the error covariance.
+  Both default to 1, at which the quantity they govern does not move.
+  Ignored unless `algorithm = "discount"`, and a vector in either
+  produces one model per value. See 'Details'.
+
 - iterations:
 
-  an integer of MCMC draws excluding burn-in draws (defaults to 50000).
+  an integer of MCMC draws excluding burn-in draws (defaults to 20000).
 
 - burnin:
 
   an integer of MCMC draws used to initialize the sampler (defaults to
-  5000). These draws do not enter the computation of posterior moments,
+  2000). These draws do not enter the computation of posterior moments,
   forecasts etc.
 
 - thin:
@@ -125,6 +137,19 @@ create_bvecmodel(
   [`thin`](https://franzmohr.github.io/bvartools/reference/thin.bvecmodel.md),
   which thins draws already made, the draws that are not kept are never
   held in memory.
+
+- volatility_break:
+
+  an optional date of `data`, `c(year, period)` such as `c(2020, 3)` or
+  a single time such as `2020.167`: the first period of a break in the
+  volatility of every shock. Needs `error = "wishart"` and constant
+  coefficients. Defaults to `NULL`, no break. See 'Details'.
+
+- volatility_scales:
+
+  a whole number of at least one, how many periods from
+  `volatility_break` on get a scale of their own before the excess
+  decays (defaults to 3). Used only with `volatility_break`.
 
 ## Value
 
@@ -140,7 +165,7 @@ A 'bvecmodel' is a list with the elements
   time-series object of the differenced endogenous variables, `w`, the
   lagged levels that enter the cointegration term, `x`, the remaining
   regressors, and `z`, the corresponding \\TK\\ row matrix of regressors
-  in SUR form.
+  in SUR form, which is absent for the discounted model.
 
 - `model`:
 
@@ -212,6 +237,58 @@ Available specifications for argument `algorithm` are:
 - `"KLGS2010"`: Algorithm proposed in Koop, León-González & Strachan
   (2010).
 
+- `"discount"`: The discounted time varying parameter model of West &
+  Harrison (1997, ch. 16) with the discounted Wishart of Uhlig (1997),
+  estimated by `VecTvpDiscount`.
+
+The discounted model is not a sampler. Its posterior is closed form –
+one pass over the sample, no chain – so `burnin` must be 0 and `thin` 1,
+and `iterations` says only how many i.i.d. draws a forecast takes from
+the answer. Its error covariance is the inverse Wishart whole, so
+`error` must be `"wishart"` and neither variable selection nor a
+structural model is available. What it buys is speed and an exact
+marginal likelihood: the sum of `/posterior/loglik` is the log marginal
+likelihood of the sample given the rank, the cointegration matrix and
+the two discounts, so a grid over any of them can be compared without a
+chain being run for any of it.
+
+The one assumption that separates it from the sampling VEC models is
+that the cointegration space is given rather than estimated.
+[`add_initial_values`](https://rdrr.io/pkg/bayests/man/add_initial_values.html)
+puts Johansen's maximum likelihood estimate at `/initial/beta` and the
+model conditions on it, so what drifts is the adjustment to the long-run
+relations and not the relations themselves. That is a different question
+from the one `"KLGS2010"` answers, not a cheaper way of answering the
+same one.
+
+[`add_posterior_coefficients`](https://rdrr.io/pkg/bayests/man/add_posterior_coefficients.html)
+estimates it like any other algorithm, the filter being part of the
+vendored BayesTS core. It consumes no random numbers, so two runs agree
+to the bit and a model estimated here and the same model estimated by
+the `bayests` command line over a file written with
+[`write_to_hdf5`](https://rdrr.io/pkg/bayests/man/write_to_hdf5.html)
+give the same numbers rather than merely the same distribution. What
+comes back is a posterior rather than a chain: one row per period under
+`posterior$a$mean`, `posterior$a$cov`, `posterior$u_sigma$scale` and
+`posterior$df`, and no `coeffs` anywhere, because joining one draw per
+period would look like a sampled path and is not one.
+
+**A volatility break scales every shock from a known period on.** With
+`volatility_break` the error covariance of period \\t\\ is \\s_t^2
+\Sigma\\, as described for
+[`create_bvarmodel`](https://franzmohr.github.io/bvartools/reference/create_bvarmodel.md)
+after Lenza and Primiceri (2022), and is available for constant
+coefficients and `error = "wishart"`. The differenced variables, the
+short-run regressors and the levels the cointegration term is built from
+are all divided by \\s_t\\, which keeps the loadings, the cointegration
+space and the Wishart prior conjugate. The prior is `sigma$volatility`
+in
+[`add_priors.bvecmodel`](https://franzmohr.github.io/bvartools/reference/add_priors.bvecmodel.md),
+the draws are `posterior$volatility$coeffs`, and
+[`vec_to_var`](https://franzmohr.github.io/bvartools/reference/vec_to_var.md)
+carries both the break and its draws over to the VAR in levels, whose
+log likelihood and forecasts are the VEC model's.
+
 ## References
 
 George, E. I., Sun, D., & Ni, S. (2008). Bayesian stochastic search for
@@ -227,17 +304,34 @@ Korobilis, D. (2013). VAR forecasting using Bayesian variable selection.
 *Journal of Applied Econometrics, 28*(2), 204–230.
 [doi:10.1002/jae.1271](https://doi.org/10.1002/jae.1271)
 
+Lenza, M., & Primiceri, G. E. (2022). How to estimate a vector
+autoregression after March 2020. *Journal of Applied Econometrics,
+37*(4), 688–699.
+[doi:10.1002/jae.2895](https://doi.org/10.1002/jae.2895)
+
 Lütkepohl, H. (2006). *New introduction to multiple time series
 analysis* (2nd ed.). Berlin: Springer.
 
+Uhlig, H. (1997). Bayesian vector autoregressions with stochastic
+volatility. *Econometrica, 65*(1), 59–73.
+[doi:10.2307/2171813](https://doi.org/10.2307/2171813)
+
+West, M., & Harrison, J. (1997). *Bayesian forecasting and dynamic
+models* (2nd ed.). New York: Springer.
+
 ## See also
 
+[`bvartools_model`](https://franzmohr.github.io/bvartools/reference/bvartools_model.md)
+describes the object this returns, element by element.
+
 Other model set-up:
+[`add_dummy_variables.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_dummy_variables.bvarmodel.md),
 [`add_initial_values.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_initial_values.bvarmodel.md),
 [`add_initial_values.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/add_initial_values.bvecmodel.md),
+[`add_prior_options()`](https://franzmohr.github.io/bvartools/reference/add_prior_options.md),
 [`add_priors.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_priors.bvarmodel.md),
 [`add_priors.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/add_priors.bvecmodel.md),
-[`combine_models()`](https://franzmohr.github.io/bvartools/reference/combine_models.md),
+[`aggregation_weights()`](https://franzmohr.github.io/bvartools/reference/aggregation_weights.md),
 [`create_bvarmodel()`](https://franzmohr.github.io/bvartools/reference/create_bvarmodel.md),
 [`transform_variables()`](https://franzmohr.github.io/bvartools/reference/transform_variables.md),
 [`use_expanding_window.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/use_expanding_window.bvarmodel.md),

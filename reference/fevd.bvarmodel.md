@@ -16,6 +16,8 @@ fevd(
   period = NULL,
   max_groups = NULL,
   impact = NULL,
+  statistic = "mean",
+  ci = NULL,
   ...
 )
 ```
@@ -54,6 +56,9 @@ fevd(
   integer. Index of the period, for which the variance decomposition
   should be generated. Only used for TVP or SV models. Default is
   `NULL`, so that the posterior draws of the last time period are used.
+  With `type = "sign"` the default is the period the restrictions were
+  imposed in, and another period is refused, since the rotations do not
+  identify it.
 
 - max_groups:
 
@@ -72,6 +77,15 @@ fevd(
   or a list of such matrices with one entry per draw. Ignored for every
   other value of `type`. See 'Details'.
 
+- statistic:
+
+  the posterior summary of each share, `"mean"` (default) or `"median"`.
+
+- ci:
+
+  an optional probability, the coverage of a credible interval returned
+  alongside, such as `0.68` for the 16th and 84th percentiles.
+
 - ...:
 
   further arguments passed to or from other methods.
@@ -82,7 +96,12 @@ A time-series object of class 'bvarfevd' running from period 0 to
 `n_ahead`, with one column per variable holding the share of the
 forecast error variance of `response` that is due to its shocks. For
 `type = "oir"` the rows sum to one; for `type = "gir"` they do so only
-with `normalise_gir = TRUE`.
+with `normalise_gir = TRUE`. With `ci`, attributes `lower` and `upper`
+hold the bounds of the credible interval of each share in the same
+shape. With `statistic = "median"` or `ci`, a GIR-based decomposition is
+normalised draw by draw rather than after averaging, and the medians
+need not sum to one. `ci` cannot be combined with `max_groups`, since
+the bounds of a pooled column are not the pooled bounds.
 
 ## Details
 
@@ -109,7 +128,7 @@ variable and \\e_k\\ a selection vector for the impulse variable.
 
 If `type = "sign"`, the decomposition uses \\P Q\\, with \\Q\\ the
 rotation that
-[`add_sign_restrictions`](https://franzmohr.github.io/bvartools/reference/add_sign_restrictions.md)
+[`add_sign_restrictions`](https://rdrr.io/pkg/bayests/man/add_sign_restrictions.html)
 accepted for that draw, and is otherwise the orthogonalised case. A
 rotation of the Choleski factor still factorises \\\Sigma\\, so the
 shares add up as they do there. Draws that no admissible rotation was
@@ -174,12 +193,19 @@ in linear multivariate models. *Economics Letters, 58*, 17-29.
 
 Other post-estimation analysis:
 [`add_sign_restrictions.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_sign_restrictions.bvarmodel.md),
+[`add_sign_zero_restrictions.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_sign_zero_restrictions.bvarmodel.md),
 [`fevd.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/fevd.bvecmodel.md),
+[`historical_decomposition()`](https://franzmohr.github.io/bvartools/reference/historical_decomposition.md),
+[`historical_decomposition.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/historical_decomposition.bvarmodel.md),
 [`irf.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/irf.bvarmodel.md),
 [`irf.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/irf.bvecmodel.md),
+[`multipliers()`](https://franzmohr.github.io/bvartools/reference/multipliers.md),
+[`multipliers.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/multipliers.bvarmodel.md),
+[`multipliers.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/multipliers.bvecmodel.md),
 [`predict.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/predict.bvarmodel.md),
 [`spillover.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/spillover.bvarmodel.md),
 [`spillover.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/spillover.bvecmodel.md),
+[`split_quantile_grid()`](https://franzmohr.github.io/bvartools/reference/split_quantile_grid.md),
 [`vec_to_var.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/vec_to_var.bvecmodel.md)
 
 ## Examples

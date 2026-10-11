@@ -67,7 +67,13 @@ section 'Prior on the cointegration space' of
 [`cointspace_prior`](https://franzmohr.github.io/bvartools/reference/cointspace_prior.md).
 On centred series the same step moves the term by \\\eta_t^{\prime}
 (w_t - m)\\, and the intercept is left to the constant and its own
-prior.
+prior. That holds for the estimation. The forecast of such a model,
+which needs
+[`rescale_error_correction`](https://franzmohr.github.io/bvartools/reference/rescale_error_correction.md)
+first, can only hold the cointegration vectors at their last value
+(`forecast_states = "hold"` in
+[`add_posterior_forecasts.bvecmodel`](https://franzmohr.github.io/bvartools/reference/add_posterior_forecasts.bvecmodel.md)),
+since after rescaling a step of them acts on the series as they are.
 
 Starting values of the constant in `object$initial` are shifted by \\\Pi
 m\\, computed from the starting values of the loadings and of \\\beta\\,
@@ -76,3 +82,28 @@ so that the chain starts from the model it simulates.
 Neither transformation can be applied twice, and neither can be added to
 a model that already carries the other: `rescale_error_correction` has
 to be called in between.
+
+## Examples
+
+``` r
+
+data("e6")
+model <- create_bvecmodel(e6 * 100, p = 1, r = 1, const = "unrestricted",
+                          iterations = 20, burnin = 10)
+
+# Divide the series in the error correction term by the standard deviation
+# of their differences
+model <- scale_error_correction(model)
+attr(model$data$train$w, "scale")
+#>       l.R      l.Dp 
+#> 0.5548042 2.9999585 
+
+model <- add_priors(model,
+                    coef = list(v_i = 0, v_i_det = 0),
+                    coint = list(v_i = 0, p_tau_i = 1),
+                    sigma = list(df = "k", scale = 1))
+model <- add_posterior_coefficients(add_initial_values(model))
+
+# Put the cointegration vectors back on the scale of the data
+model <- rescale_error_correction(model)
+```

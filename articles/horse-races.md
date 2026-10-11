@@ -189,71 +189,71 @@ print(sc, relative = 1)
 #> Log-likelihood
 #> 
 #>            Mean Median Quantile (2.5%) Quantile (97.5%)
-#>  Model 1 -141.2 -140.8          -151.3           -133.3
-#>  Model 2 -131.4 -131.0          -142.1           -121.9
-#>  Model 3 -129.9 -129.5          -141.7           -119.5
-#>  Model 4 -128.6 -128.5          -142.0           -116.7
-#>  Model 5 -128.3 -128.1          -140.3           -118.2
-#>  Model 6 -138.7 -138.2          -152.5           -127.6
+#>  Model 1 -141.4 -141.0          -151.2           -133.3
+#>  Model 2 -131.4 -130.9          -143.0           -122.2
+#>  Model 3 -130.0 -129.7          -142.7           -119.4
+#>  Model 4 -128.8 -128.3          -143.2           -117.6
+#>  Model 5 -128.8 -128.4          -141.5           -118.2
+#>  Model 6 -140.4 -140.6          -152.5           -128.8
 #> 
 #> 
 #> Akaike Information Criterion (AIC)
 #> 
 #>           Mean Median Quantile (2.5%) Quantile (97.5%)
 #>  Model 1 300.5  300.5                                 
-#>  Model 2 289.5  289.5                                 
-#>  Model 3 295.9  295.9                                 
-#>  Model 4 302.3  302.3                                 
-#>  Model 5 317.8  317.8                                 
-#>  Model 6 341.6  341.6                                 
+#>  Model 2 289.7  289.7                                 
+#>  Model 3 296.1  296.1                                 
+#>  Model 4 302.5  302.5                                 
+#>  Model 5 318.4  318.4                                 
+#>  Model 6 342.8  342.8                                 
 #> 
 #> 
 #> Bayesian Information Criterion (BIC)
 #> 
 #>           Mean Median Quantile (2.5%) Quantile (97.5%)
 #>  Model 1 355.6  355.6                                 
-#>  Model 2 372.1  372.1                                 
-#>  Model 3 406.2  406.2                                 
-#>  Model 4 440.1  440.1                                 
-#>  Model 5 455.6  455.6                                 
-#>  Model 6 479.4  479.4                                 
+#>  Model 2 372.4  372.4                                 
+#>  Model 3 406.4  406.4                                 
+#>  Model 4 440.3  440.3                                 
+#>  Model 5 456.2  456.2                                 
+#>  Model 6 480.6  480.6                                 
 #> 
 #> 
 #> Hannan-Quinn Criterion (HQ)
 #> 
 #>           Mean Median Quantile (2.5%) Quantile (97.5%)
 #>  Model 1 322.9  322.9                                 
-#>  Model 2 323.0  323.0                                 
-#>  Model 3 340.7  340.7                                 
-#>  Model 4 358.3  358.3                                 
-#>  Model 5 373.8  373.8                                 
-#>  Model 6 397.5  397.5                                 
+#>  Model 2 323.3  323.3                                 
+#>  Model 3 340.9  340.9                                 
+#>  Model 4 358.4  358.4                                 
+#>  Model 5 374.3  374.3                                 
+#>  Model 6 398.8  398.8                                 
 #> 
 #> 
 #> Widely Applicable Information Criterion (WAIC)
 #> 
 #>           Mean Median Quantile (2.5%) Quantile (97.5%)
-#>  Model 1 303.7  303.7           218.1            389.3
-#>  Model 2 294.6  294.6           210.0            379.2
-#>  Model 3 301.5  301.5           211.1            392.0
-#>  Model 4 310.2  310.2           217.5            402.9
-#>  Model 5 287.9  287.9           198.2            377.6
-#>  Model 6 306.6  306.6           214.8            398.4
+#>  Model 1 304.4  304.4           218.9            389.9
+#>  Model 2 293.5  293.5           209.0            377.9
+#>  Model 3 301.9  301.9           211.4            392.5
+#>  Model 4 311.8  311.8           218.3            405.3
+#>  Model 5 290.2  290.2           199.5            380.8
+#>  Model 6 311.3  311.3           218.9            403.8
 #> 
-#> Periods with a pointwise log-likelihood variance above 0.4, which makes the correction of WAIC unreliable, in models 1 (11), 2 (17), 3 (23), 4 (28), 5 (16), 6 (15).
+#> Periods with a pointwise log-likelihood variance above 0.4, which makes the correction of WAIC unreliable, in models 1 (10), 2 (17), 3 (23), 4 (28), 5 (17), 6 (16).
 #> 
 #> 
 #> Leave-One-Out Information Criterion (LOOIC)
 #> 
 #>           Mean Median Quantile (2.5%) Quantile (97.5%)
-#>  Model 1 303.9  303.9           218.3            389.6
-#>  Model 2 295.1  295.1           210.4            379.9
-#>  Model 3 303.1  303.1           212.1            394.1
-#>  Model 4 312.1  312.1           218.8            405.4
-#>  Model 5 288.2  288.2           198.6            377.9
-#>  Model 6 307.6  307.6           215.1            400.2
+#>  Model 1 304.9  304.9           219.1            390.8
+#>  Model 2 294.0  294.0           209.3            378.7
+#>  Model 3 302.9  302.9           212.2            393.6
+#>  Model 4 313.4  313.4           220.0            406.9
+#>  Model 5 290.8  290.8           199.9            381.8
+#>  Model 6 312.0  312.0           219.1            404.8
 #> 
-#> Influential periods, whose importance sampling is unreliable, in models 3 (1), 4 (2), 6 (2), counted as a Pareto k above 0.7.
+#> Influential periods, whose importance sampling is unreliable, in models 1 (1), 3 (1), 4 (3), 5 (1), 6 (1), counted as a Pareto k above 0.7.
 #> 
 #> 
 #> ------------------------------------------
@@ -263,35 +263,35 @@ print(sc, relative = 1)
 #> Mean absolute forecast errors (MAFE)
 #> 
 #>  Variable h Model 1 Model 2 Model 3 Model 4 Model 5 Model 6
-#>        dy 1       1  1.0012  1.0006  1.0179  1.0019  0.9882
-#>        Dp 1       1  0.9399  0.9442  0.9488  0.9487  0.9738
-#>         r 1       1  0.9879  0.9713  0.9735  0.9491  0.9764
-#>        dy 2       1  0.9952  1.0086  1.0215  0.9825  0.9717
-#>        Dp 2       1  0.9405  0.9405  0.9352  0.9315  0.9790
-#>         r 2       1  1.1084  1.0904  1.0511  1.0169  1.0489
-#>        dy 3       1  1.0116  1.0179  1.0363  1.0113  1.0190
-#>        Dp 3       1  1.0005  1.0007  0.9875  0.9662  0.9978
-#>         r 3       1  1.1672  1.1822  1.1164  1.0585  1.1031
-#>        dy 4       1  1.0077  1.0215  1.0260  0.9947  0.9767
-#>        Dp 4       1  1.0190  1.0442  1.0324  0.9713  1.0178
-#>         r 4       1  1.2126  1.2328  1.1976  1.1134  1.1475
+#>        dy 1       1  1.0008  1.0111  1.0103  0.9888  0.9895
+#>        Dp 1       1  0.9502  0.9630  0.9525  0.9569  0.9753
+#>         r 1       1  0.9854  0.9851  0.9801  0.9748  1.0073
+#>        dy 2       1  1.0064  1.0140  1.0241  0.9787  0.9772
+#>        Dp 2       1  0.9280  0.9379  0.9413  0.9351  0.9767
+#>         r 2       1  1.1030  1.0675  1.0360  1.0113  1.0483
+#>        dy 3       1  1.0274  1.0242  1.0318  1.0153  1.0090
+#>        Dp 3       1  0.9906  0.9881  0.9842  0.9650  0.9974
+#>         r 3       1  1.1516  1.1507  1.0925  1.0434  1.0999
+#>        dy 4       1  1.0124  1.0247  1.0360  0.9886  0.9971
+#>        Dp 4       1  1.0224  1.0380  1.0371  0.9773  1.0562
+#>         r 4       1  1.1798  1.2088  1.1728  1.0954  1.1298
 #> 
 #> 
 #> Root mean squared forecast errors (RMSFE)
 #> 
 #>  Variable h Model 1 Model 2 Model 3 Model 4 Model 5 Model 6
-#>        dy 1       1  0.9955  0.9968  1.0150  0.9993  0.9868
-#>        Dp 1       1  0.9419  0.9486  0.9496  0.9505  0.9797
-#>         r 1       1  0.9868  0.9748  0.9745  0.9531  0.9819
-#>        dy 2       1  0.9942  1.0057  1.0193  0.9852  0.9759
-#>        Dp 2       1  0.9406  0.9438  0.9390  0.9339  0.9833
-#>         r 2       1  1.1125  1.0953  1.0558  1.0183  1.0551
-#>        dy 3       1  1.0114  1.0190  1.0392  1.0118  1.0162
-#>        Dp 3       1  0.9987  1.0013  0.9871  0.9663  0.9982
-#>         r 3       1  1.1809  1.1864  1.1201  1.0628  1.1126
-#>        dy 4       1  1.0054  1.0177  1.0254  0.9931  0.9774
-#>        Dp 4       1  1.0152  1.0428  1.0340  0.9720  1.0225
-#>         r 4       1  1.2232  1.2363  1.2059  1.1184  1.1622
+#>        dy 1       1  0.9984  1.0082  1.0132  0.9893  0.9887
+#>        Dp 1       1  0.9522  0.9668  0.9535  0.9572  0.9814
+#>         r 1       1  0.9882  0.9891  0.9849  0.9765  1.0070
+#>        dy 2       1  1.0031  1.0116  1.0257  0.9792  0.9801
+#>        Dp 2       1  0.9355  0.9428  0.9459  0.9379  0.9816
+#>         r 2       1  1.1054  1.0753  1.0399  1.0130  1.0502
+#>        dy 3       1  1.0247  1.0282  1.0319  1.0080  1.0112
+#>        Dp 3       1  0.9948  0.9915  0.9894  0.9727  1.0019
+#>         r 3       1  1.1575  1.1551  1.0998  1.0471  1.1010
+#>        dy 4       1  1.0047  1.0149  1.0282  0.9813  0.9944
+#>        Dp 4       1  1.0183  1.0339  1.0335  0.9742  1.0480
+#>         r 4       1  1.1827  1.2097  1.1761  1.0944  1.1291
 ```
 
 #### In-sample plots
@@ -360,6 +360,171 @@ plot_forecast_errors_by_period(models, criterion = "FE")
 
 plot of chunk fe-by-period
 
+## Pooling forecasts
+
+No single specification forecasts best in every period, because the
+errors of different models are not perfectly correlated. A pool of
+forecasts exploits this: it is the mixture of the predictive
+distributions of its members, and combining forecasts in this way is one
+of the most reliable ways of improving them. Function `pool_forecasts`
+forms the equal-weight pool from the draws the models already hold,
+taking the same number of draws from each member, and matches the
+windows of the members by the end of their estimation samples, so that
+every pooled forecast combines forecasts made with the same information.
+Here it pools all six models of the race:
+
+``` r
+
+set.seed(1234567)
+pool <- pool_forecasts(models)
+pool
+#> Pooled forecasts, equal weights
+#> 
+#> Members: Model 1, Model 2, Model 3, Model 4, Model 5, Model 6
+#> Variables: dy, Dp, r
+#> Forecast horizon: 4
+#> Draws per member: 2000
+#> Forecasts: 9, from estimation samples ending in 2017Q4 to 2019Q4
+```
+
+The pool is scored and ranked like the models. Function `combine_models`
+adds it to the list of models, where the functions that estimate a model
+leave it unchanged:
+
+``` r
+
+models_and_pool <- combine_models(models, pool)
+models_and_pool <- add_forecast_errors(models_and_pool, test_sample = data)
+sc_pool <- selection_criteria(models_and_pool)
+print(sc_pool, relative = 1)
+#> 
+#> ------------------------------------------
+#> In-sample
+#> ------------------------------------------
+#> 
+#> Log-likelihood
+#> 
+#>            Mean Median Quantile (2.5%) Quantile (97.5%)
+#>  Model 1 -141.4 -141.0          -151.2           -133.3
+#>  Model 2 -131.4 -130.9          -143.0           -122.2
+#>  Model 3 -130.0 -129.7          -142.7           -119.4
+#>  Model 4 -128.8 -128.3          -143.2           -117.6
+#>  Model 5 -128.8 -128.4          -141.5           -118.2
+#>  Model 6 -140.4 -140.6          -152.5           -128.8
+#>  Model 7                                               
+#> 
+#> 
+#> Akaike Information Criterion (AIC)
+#> 
+#>           Mean Median Quantile (2.5%) Quantile (97.5%)
+#>  Model 1 300.5  300.5                                 
+#>  Model 2 289.7  289.7                                 
+#>  Model 3 296.1  296.1                                 
+#>  Model 4 302.5  302.5                                 
+#>  Model 5 318.4  318.4                                 
+#>  Model 6 342.8  342.8                                 
+#>  Model 7                                              
+#> 
+#> 
+#> Bayesian Information Criterion (BIC)
+#> 
+#>           Mean Median Quantile (2.5%) Quantile (97.5%)
+#>  Model 1 355.6  355.6                                 
+#>  Model 2 372.4  372.4                                 
+#>  Model 3 406.4  406.4                                 
+#>  Model 4 440.3  440.3                                 
+#>  Model 5 456.2  456.2                                 
+#>  Model 6 480.6  480.6                                 
+#>  Model 7                                              
+#> 
+#> 
+#> Hannan-Quinn Criterion (HQ)
+#> 
+#>           Mean Median Quantile (2.5%) Quantile (97.5%)
+#>  Model 1 322.9  322.9                                 
+#>  Model 2 323.3  323.3                                 
+#>  Model 3 340.9  340.9                                 
+#>  Model 4 358.4  358.4                                 
+#>  Model 5 374.3  374.3                                 
+#>  Model 6 398.8  398.8                                 
+#>  Model 7                                              
+#> 
+#> 
+#> Widely Applicable Information Criterion (WAIC)
+#> 
+#>           Mean Median Quantile (2.5%) Quantile (97.5%)
+#>  Model 1 304.4  304.4           218.9            389.9
+#>  Model 2 293.5  293.5           209.0            377.9
+#>  Model 3 301.9  301.9           211.4            392.5
+#>  Model 4 311.8  311.8           218.3            405.3
+#>  Model 5 290.2  290.2           199.5            380.8
+#>  Model 6 311.3  311.3           218.9            403.8
+#>  Model 7                                              
+#> 
+#> Periods with a pointwise log-likelihood variance above 0.4, which makes the correction of WAIC unreliable, in models 1 (10), 2 (17), 3 (23), 4 (28), 5 (17), 6 (16).
+#> 
+#> 
+#> Leave-One-Out Information Criterion (LOOIC)
+#> 
+#>           Mean Median Quantile (2.5%) Quantile (97.5%)
+#>  Model 1 304.9  304.9           219.1            390.8
+#>  Model 2 294.0  294.0           209.3            378.7
+#>  Model 3 302.9  302.9           212.2            393.6
+#>  Model 4 313.4  313.4           220.0            406.9
+#>  Model 5 290.8  290.8           199.9            381.8
+#>  Model 6 312.0  312.0           219.1            404.8
+#>  Model 7                                              
+#> 
+#> Influential periods, whose importance sampling is unreliable, in models 1 (1), 3 (1), 4 (3), 5 (1), 6 (1), counted as a Pareto k above 0.7.
+#> 
+#> 
+#> ------------------------------------------
+#> Out-of-sample
+#> ------------------------------------------
+#> 
+#> Mean absolute forecast errors (MAFE)
+#> 
+#>  Variable h Model 1 Model 2 Model 3 Model 4 Model 5 Model 6 Model 7
+#>        dy 1       1  1.0008  1.0111  1.0103  0.9888  0.9895  1.0001
+#>        Dp 1       1  0.9502  0.9630  0.9525  0.9569  0.9753  0.9663
+#>         r 1       1  0.9854  0.9851  0.9801  0.9748  1.0073  0.9888
+#>        dy 2       1  1.0064  1.0140  1.0241  0.9787  0.9772  1.0001
+#>        Dp 2       1  0.9280  0.9379  0.9413  0.9351  0.9767  0.9532
+#>         r 2       1  1.1030  1.0675  1.0360  1.0113  1.0483  1.0444
+#>        dy 3       1  1.0274  1.0242  1.0318  1.0153  1.0090  1.0180
+#>        Dp 3       1  0.9906  0.9881  0.9842  0.9650  0.9974  0.9875
+#>         r 3       1  1.1516  1.1507  1.0925  1.0434  1.0999  1.0897
+#>        dy 4       1  1.0124  1.0247  1.0360  0.9886  0.9971  1.0098
+#>        Dp 4       1  1.0224  1.0380  1.0371  0.9773  1.0562  1.0218
+#>         r 4       1  1.1798  1.2088  1.1728  1.0954  1.1298  1.1311
+#> 
+#> 
+#> Root mean squared forecast errors (RMSFE)
+#> 
+#>  Variable h Model 1 Model 2 Model 3 Model 4 Model 5 Model 6 Model 7
+#>        dy 1       1  0.9984  1.0082  1.0132  0.9893  0.9887  0.9997
+#>        Dp 1       1  0.9522  0.9668  0.9535  0.9572  0.9814  0.9687
+#>         r 1       1  0.9882  0.9891  0.9849  0.9765  1.0070  0.9910
+#>        dy 2       1  1.0031  1.0116  1.0257  0.9792  0.9801  1.0001
+#>        Dp 2       1  0.9355  0.9428  0.9459  0.9379  0.9816  0.9576
+#>         r 2       1  1.1054  1.0753  1.0399  1.0130  1.0502  1.0479
+#>        dy 3       1  1.0247  1.0282  1.0319  1.0080  1.0112  1.0174
+#>        Dp 3       1  0.9948  0.9915  0.9894  0.9727  1.0019  0.9918
+#>         r 3       1  1.1575  1.1551  1.0998  1.0471  1.1010  1.0949
+#>        dy 4       1  1.0047  1.0149  1.0282  0.9813  0.9944  1.0040
+#>        Dp 4       1  1.0183  1.0339  1.0335  0.9742  1.0480  1.0183
+#>         r 4       1  1.1827  1.2097  1.1761  1.0944  1.1291  1.1341
+```
+
+The pool is the last model of the list. It was not estimated, so it has
+no in-sample criteria. Over these nine forecasts it lands in the middle
+of the field in most columns: it seldom beats the best model of a
+column, but neither does it share the largest errors, and over a longer
+race that robustness is what makes pools hard to beat. A pool is only as
+honest as the choice of its members: members chosen because they scored
+well over the same periods the pool is judged on flatter the pool with
+information it would not have had.
+
 ## Adding forecasts from other sources
 
 A horse race becomes more informative, if the models do not only compete
@@ -408,13 +573,13 @@ fcst[["value"]] <- ifelse(fcst[["forecaster"]] == "Forecaster A",
                           colMeans(before)[fcst[["variable"]]])
 
 head(fcst)
-#>    origin h variable   forecaster  period      value
-#> 1 2018.00 1       dy Forecaster A 2018.00  1.6488127
-#> 2 2018.25 1       dy Forecaster A 2018.25  1.9068402
-#> 3 2018.50 1       dy Forecaster A 2018.50 -1.0217169
-#> 4 2018.75 1       dy Forecaster A 2018.75 -0.3977054
-#> 5 2019.00 1       dy Forecaster A 2019.00  0.7443746
-#> 6 2019.25 1       dy Forecaster A 2019.25  0.3509513
+#>    origin h variable   forecaster  period     value
+#> 1 2018.00 1       dy Forecaster A 2018.00 1.6726137
+#> 2 2018.25 1       dy Forecaster A 2018.25 1.3672011
+#> 3 2018.50 1       dy Forecaster A 2018.50 1.3653565
+#> 4 2018.75 1       dy Forecaster A 2018.75 0.3355216
+#> 5 2019.00 1       dy Forecaster A 2019.00 1.2110604
+#> 6 2019.25 1       dy Forecaster A 2019.25 0.4161256
 ```
 
 The columns of the data set do not have to follow a particular naming
@@ -467,12 +632,12 @@ print(sc_all, relative = 1)
 #> Log-likelihood
 #> 
 #>            Mean Median Quantile (2.5%) Quantile (97.5%)
-#>  Model 1 -141.2 -140.8          -151.3           -133.3
-#>  Model 2 -131.4 -131.0          -142.1           -121.9
-#>  Model 3 -129.9 -129.5          -141.7           -119.5
-#>  Model 4 -128.6 -128.5          -142.0           -116.7
-#>  Model 5 -128.3 -128.1          -140.3           -118.2
-#>  Model 6 -138.7 -138.2          -152.5           -127.6
+#>  Model 1 -141.4 -141.0          -151.2           -133.3
+#>  Model 2 -131.4 -130.9          -143.0           -122.2
+#>  Model 3 -130.0 -129.7          -142.7           -119.4
+#>  Model 4 -128.8 -128.3          -143.2           -117.6
+#>  Model 5 -128.8 -128.4          -141.5           -118.2
+#>  Model 6 -140.4 -140.6          -152.5           -128.8
 #>  Model 7                                               
 #>  Model 8                                               
 #> 
@@ -481,11 +646,11 @@ print(sc_all, relative = 1)
 #> 
 #>           Mean Median Quantile (2.5%) Quantile (97.5%)
 #>  Model 1 300.5  300.5                                 
-#>  Model 2 289.5  289.5                                 
-#>  Model 3 295.9  295.9                                 
-#>  Model 4 302.3  302.3                                 
-#>  Model 5 317.8  317.8                                 
-#>  Model 6 341.6  341.6                                 
+#>  Model 2 289.7  289.7                                 
+#>  Model 3 296.1  296.1                                 
+#>  Model 4 302.5  302.5                                 
+#>  Model 5 318.4  318.4                                 
+#>  Model 6 342.8  342.8                                 
 #>  Model 7                                              
 #>  Model 8                                              
 #> 
@@ -494,11 +659,11 @@ print(sc_all, relative = 1)
 #> 
 #>           Mean Median Quantile (2.5%) Quantile (97.5%)
 #>  Model 1 355.6  355.6                                 
-#>  Model 2 372.1  372.1                                 
-#>  Model 3 406.2  406.2                                 
-#>  Model 4 440.1  440.1                                 
-#>  Model 5 455.6  455.6                                 
-#>  Model 6 479.4  479.4                                 
+#>  Model 2 372.4  372.4                                 
+#>  Model 3 406.4  406.4                                 
+#>  Model 4 440.3  440.3                                 
+#>  Model 5 456.2  456.2                                 
+#>  Model 6 480.6  480.6                                 
 #>  Model 7                                              
 #>  Model 8                                              
 #> 
@@ -507,11 +672,11 @@ print(sc_all, relative = 1)
 #> 
 #>           Mean Median Quantile (2.5%) Quantile (97.5%)
 #>  Model 1 322.9  322.9                                 
-#>  Model 2 323.0  323.0                                 
-#>  Model 3 340.7  340.7                                 
-#>  Model 4 358.3  358.3                                 
-#>  Model 5 373.8  373.8                                 
-#>  Model 6 397.5  397.5                                 
+#>  Model 2 323.3  323.3                                 
+#>  Model 3 340.9  340.9                                 
+#>  Model 4 358.4  358.4                                 
+#>  Model 5 374.3  374.3                                 
+#>  Model 6 398.8  398.8                                 
 #>  Model 7                                              
 #>  Model 8                                              
 #> 
@@ -519,31 +684,31 @@ print(sc_all, relative = 1)
 #> Widely Applicable Information Criterion (WAIC)
 #> 
 #>           Mean Median Quantile (2.5%) Quantile (97.5%)
-#>  Model 1 303.7  303.7           218.1            389.3
-#>  Model 2 294.6  294.6           210.0            379.2
-#>  Model 3 301.5  301.5           211.1            392.0
-#>  Model 4 310.2  310.2           217.5            402.9
-#>  Model 5 287.9  287.9           198.2            377.6
-#>  Model 6 306.6  306.6           214.8            398.4
+#>  Model 1 304.4  304.4           218.9            389.9
+#>  Model 2 293.5  293.5           209.0            377.9
+#>  Model 3 301.9  301.9           211.4            392.5
+#>  Model 4 311.8  311.8           218.3            405.3
+#>  Model 5 290.2  290.2           199.5            380.8
+#>  Model 6 311.3  311.3           218.9            403.8
 #>  Model 7                                              
 #>  Model 8                                              
 #> 
-#> Periods with a pointwise log-likelihood variance above 0.4, which makes the correction of WAIC unreliable, in models 1 (11), 2 (17), 3 (23), 4 (28), 5 (16), 6 (15).
+#> Periods with a pointwise log-likelihood variance above 0.4, which makes the correction of WAIC unreliable, in models 1 (10), 2 (17), 3 (23), 4 (28), 5 (17), 6 (16).
 #> 
 #> 
 #> Leave-One-Out Information Criterion (LOOIC)
 #> 
 #>           Mean Median Quantile (2.5%) Quantile (97.5%)
-#>  Model 1 303.9  303.9           218.3            389.6
-#>  Model 2 295.1  295.1           210.4            379.9
-#>  Model 3 303.1  303.1           212.1            394.1
-#>  Model 4 312.1  312.1           218.8            405.4
-#>  Model 5 288.2  288.2           198.6            377.9
-#>  Model 6 307.6  307.6           215.1            400.2
+#>  Model 1 304.9  304.9           219.1            390.8
+#>  Model 2 294.0  294.0           209.3            378.7
+#>  Model 3 302.9  302.9           212.2            393.6
+#>  Model 4 313.4  313.4           220.0            406.9
+#>  Model 5 290.8  290.8           199.9            381.8
+#>  Model 6 312.0  312.0           219.1            404.8
 #>  Model 7                                              
 #>  Model 8                                              
 #> 
-#> Influential periods, whose importance sampling is unreliable, in models 3 (1), 4 (2), 6 (2), counted as a Pareto k above 0.7.
+#> Influential periods, whose importance sampling is unreliable, in models 1 (1), 3 (1), 4 (3), 5 (1), 6 (1), counted as a Pareto k above 0.7.
 #> 
 #> 
 #> ------------------------------------------
@@ -553,35 +718,35 @@ print(sc_all, relative = 1)
 #> Mean absolute forecast errors (MAFE)
 #> 
 #>  Variable h Model 1 Model 2 Model 3 Model 4 Model 5 Model 6 Model 7 Model 8
-#>        dy 1       1  1.0012  1.0006  1.0179  1.0019  0.9882  0.4509  0.6050
-#>        Dp 1       1  0.9399  0.9442  0.9488  0.9487  0.9738  0.3914  0.6127
-#>         r 1       1  0.9879  0.9713  0.9735  0.9491  0.9764  0.6489 10.0343
-#>        dy 2       1  0.9952  1.0086  1.0215  0.9825  0.9717  0.8154  0.5530
-#>        Dp 2       1  0.9405  0.9405  0.9352  0.9315  0.9790  0.8675  0.5850
-#>         r 2       1  1.1084  1.0904  1.0511  1.0169  1.0489  0.5860  6.8391
-#>        dy 3       1  1.0116  1.0179  1.0363  1.0113  1.0190  0.6000  0.5699
-#>        Dp 3       1  1.0005  1.0007  0.9875  0.9662  0.9978  0.4991  0.5804
-#>         r 3       1  1.1672  1.1822  1.1164  1.0585  1.1031  0.4572  5.4908
-#>        dy 4       1  1.0077  1.0215  1.0260  0.9947  0.9767  1.1346  0.5112
-#>        Dp 4       1  1.0190  1.0442  1.0324  0.9713  1.0178  1.1652  0.6914
-#>         r 4       1  1.2126  1.2328  1.1976  1.1134  1.1475  0.3615  4.7399
+#>        dy 1       1  1.0008  1.0111  1.0103  0.9888  0.9895  0.5859  0.6031
+#>        Dp 1       1  0.9502  0.9630  0.9525  0.9569  0.9753  0.5233  0.6180
+#>         r 1       1  0.9854  0.9851  0.9801  0.9748  1.0073  0.4392 10.1606
+#>        dy 2       1  1.0064  1.0140  1.0241  0.9787  0.9772  0.6954  0.5543
+#>        Dp 2       1  0.9280  0.9379  0.9413  0.9351  0.9767  0.5838  0.5855
+#>         r 2       1  1.1030  1.0675  1.0360  1.0113  1.0483  0.5840  6.7725
+#>        dy 3       1  1.0274  1.0242  1.0318  1.0153  1.0090  1.0583  0.5700
+#>        Dp 3       1  0.9906  0.9881  0.9842  0.9650  0.9974  0.7975  0.5771
+#>         r 3       1  1.1516  1.1507  1.0925  1.0434  1.0999  0.4066  5.4326
+#>        dy 4       1  1.0124  1.0247  1.0360  0.9886  0.9971  0.6788  0.5154
+#>        Dp 4       1  1.0224  1.0380  1.0371  0.9773  1.0562  0.9253  0.6929
+#>         r 4       1  1.1798  1.2088  1.1728  1.0954  1.1298  0.3534  4.6960
 #> 
 #> 
 #> Root mean squared forecast errors (RMSFE)
 #> 
 #>  Variable h Model 1 Model 2 Model 3 Model 4 Model 5 Model 6 Model 7 Model 8
-#>        dy 1       1  0.9955  0.9968  1.0150  0.9993  0.9868  0.4694  0.6098
-#>        Dp 1       1  0.9419  0.9486  0.9496  0.9505  0.9797  0.3932  0.6380
-#>         r 1       1  0.9868  0.9748  0.9745  0.9531  0.9819  0.6285  8.0116
-#>        dy 2       1  0.9942  1.0057  1.0193  0.9852  0.9759  0.7735  0.5792
-#>        Dp 2       1  0.9406  0.9438  0.9390  0.9339  0.9833  0.7922  0.6240
-#>         r 2       1  1.1125  1.0953  1.0558  1.0183  1.0551  0.5347  5.4637
-#>        dy 3       1  1.0114  1.0190  1.0392  1.0118  1.0162  0.6117  0.6080
-#>        Dp 3       1  0.9987  1.0013  0.9871  0.9663  0.9982  0.4288  0.6280
-#>         r 3       1  1.1809  1.1864  1.1201  1.0628  1.1126  0.4073  4.3971
-#>        dy 4       1  1.0054  1.0177  1.0254  0.9931  0.9774  1.2094  0.5897
-#>        Dp 4       1  1.0152  1.0428  1.0340  0.9720  1.0225  1.0409  0.6961
-#>         r 4       1  1.2232  1.2363  1.2059  1.1184  1.1622  0.3653  3.7953
+#>        dy 1       1  0.9984  1.0082  1.0132  0.9893  0.9887  0.6229  0.6092
+#>        Dp 1       1  0.9522  0.9668  0.9535  0.9572  0.9814  0.4611  0.6444
+#>         r 1       1  0.9882  0.9891  0.9849  0.9765  1.0070  0.4386  8.1034
+#>        dy 2       1  1.0031  1.0116  1.0257  0.9792  0.9801  0.6935  0.5806
+#>        Dp 2       1  0.9355  0.9428  0.9459  0.9379  0.9816  0.5586  0.6254
+#>         r 2       1  1.1054  1.0753  1.0399  1.0130  1.0502  0.5362  5.4025
+#>        dy 3       1  1.0247  1.0282  1.0319  1.0080  1.0112  0.8546  0.6087
+#>        Dp 3       1  0.9948  0.9915  0.9894  0.9727  1.0019  0.8051  0.6270
+#>         r 3       1  1.1575  1.1551  1.0998  1.0471  1.1010  0.3725  4.3324
+#>        dy 4       1  1.0047  1.0149  1.0282  0.9813  0.9944  0.6098  0.5914
+#>        Dp 4       1  1.0183  1.0339  1.0335  0.9742  1.0480  0.8519  0.6955
+#>         r 4       1  1.1827  1.2097  1.1761  1.0944  1.1291  0.3195  3.7352
 ```
 
 The two forecasters are the last two models of the list. Since external
@@ -590,6 +755,11 @@ value to the out-of-sample statistics instead of a full posterior.
 Accordingly, their credible bands are degenerate and in-sample criteria
 are not available for them, which the printed comparison and the plots
 indicate by an empty entry.
+
+`vignette("macroprojections", package = "bvartools")` races models
+against projections that institutions actually published. Those are
+annual, and it shows how the quarterly forecast draws of a model are
+aggregated to annual figures before they are compared.
 
 ``` r
 

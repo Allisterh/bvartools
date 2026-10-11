@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">bvartools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,9 +72,13 @@
 <span>  tvp <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  varsel <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span>  algorithm <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  delta_beta <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  delta_sigma <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  iterations <span class="op">=</span> <span class="fl">20000</span>,</span>
 <span>  burnin <span class="op">=</span> <span class="fl">2000</span>,</span>
-<span>  thin <span class="op">=</span> <span class="fl">1</span></span>
+<span>  thin <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  volatility_break <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  volatility_scales <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -154,14 +158,22 @@ that should be employed. Default is <code>"none"</code>. See 'Details'.</p></dd>
 non-standard options.</p></dd>
 
 
+<dt id="arg-delta-beta-delta-sigma">delta_beta, delta_sigma<a class="anchor" aria-label="anchor" href="#arg-delta-beta-delta-sigma"></a></dt>
+<dd><p>numeric discount factors in \((0, 1]\) of the
+discounted model, the first governing the coefficients and the second the
+error covariance. Both default to 1, at which the quantity they govern does
+not move. Ignored unless <code>algorithm = "discount"</code>, and a vector in
+either produces one model per value. See 'Details'.</p></dd>
+
+
 <dt id="arg-iterations">iterations<a class="anchor" aria-label="anchor" href="#arg-iterations"></a></dt>
 <dd><p>an integer of MCMC draws excluding burn-in draws (defaults
-to 50000).</p></dd>
+to 20000).</p></dd>
 
 
 <dt id="arg-burnin">burnin<a class="anchor" aria-label="anchor" href="#arg-burnin"></a></dt>
 <dd><p>an integer of MCMC draws used to initialize the sampler
-(defaults to 5000). These draws do not enter the computation of posterior
+(defaults to 2000). These draws do not enter the computation of posterior
 moments, forecasts etc.</p></dd>
 
 
@@ -171,6 +183,19 @@ the burn-in the sampler keeps the last of every <code>thin</code> draws, so it r
 <code>burnin + iterations * thin</code> draws and still keeps <code>iterations</code>. Unlike
 <code><a href="thin.bvecmodel.html">thin</a></code>, which thins draws already made, the draws
 that are not kept are never held in memory.</p></dd>
+
+
+<dt id="arg-volatility-break">volatility_break<a class="anchor" aria-label="anchor" href="#arg-volatility-break"></a></dt>
+<dd><p>an optional date of <code>data</code>, <code>c(year, period)</code>
+such as <code>c(2020, 3)</code> or a single time such as <code>2020.167</code>: the first
+period of a break in the volatility of every shock. Needs <code>error = "wishart"</code>
+and constant coefficients. Defaults to <code>NULL</code>, no break. See 'Details'.</p></dd>
+
+
+<dt id="arg-volatility-scales">volatility_scales<a class="anchor" aria-label="anchor" href="#arg-volatility-scales"></a></dt>
+<dd><p>a whole number of at least one, how many periods from
+<code>volatility_break</code> on get a scale of their own before the excess decays
+(defaults to 3). Used only with <code>volatility_break</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -184,7 +209,7 @@ or <code>r</code>, a list of class 'modellist' with one such object per specific
   \(T \times K\) time-series object of the differenced endogenous variables,
   <code>w</code>, the lagged levels that enter the cointegration term, <code>x</code>, the
   remaining regressors, and <code>z</code>, the corresponding \(TK\) row matrix of
-  regressors in SUR form.</p></dd>
+  regressors in SUR form, which is absent for the discounted model.</p></dd>
 
   <dt><code>model</code></dt>
 <dd><p>a list of the specification with the same elements as that of
@@ -233,7 +258,48 @@ algorithm. Covariances are estimated based on a triangular decomposition.</p></l
 <li><p><code>"bvs"</code>: Bayesian variable selection as proposed in Korobilis (2013).</p></li>
 <li><p><code>"ssvs"</code>: Stochastic search variable selection as proposed in George et al. (2008).</p></li>
 </ul><p>Available specifications for argument <code>algorithm</code> are:</p><ul><li><p><code>"KLGS2010"</code>: Algorithm proposed in Koop, León-González &amp; Strachan (2010).</p></li>
-</ul></div>
+<li><p><code>"discount"</code>: The discounted time varying parameter model of
+ West &amp; Harrison (1997, ch. 16) with the discounted Wishart of Uhlig (1997),
+ estimated by <code>VecTvpDiscount</code>.</p></li>
+</ul><p>The discounted model is not a sampler. Its posterior is closed form – one
+pass over the sample, no chain – so <code>burnin</code> must be 0 and <code>thin</code>
+1, and <code>iterations</code> says only how many i.i.d. draws a forecast takes
+from the answer. Its error covariance is the inverse Wishart whole, so
+<code>error</code> must be <code>"wishart"</code> and neither variable selection nor a
+structural model is available. What it buys is speed and an exact marginal
+likelihood: the sum of <code>/posterior/loglik</code> is the log marginal
+likelihood of the sample given the rank, the cointegration matrix and the two
+discounts, so a grid over any of them can be compared without a chain being
+run for any of it.</p>
+<p>The one assumption that separates it from the sampling VEC models is that the
+cointegration space is given rather than estimated. <code><a href="https://rdrr.io/pkg/bayests/man/add_initial_values.html" class="external-link">add_initial_values</a></code>
+puts Johansen's maximum likelihood estimate at <code>/initial/beta</code> and the
+model conditions on it, so what drifts is the adjustment to the long-run
+relations and not the relations themselves. That is a different question from
+the one <code>"KLGS2010"</code> answers, not a cheaper way of answering the same
+one.</p>
+<p><code><a href="https://rdrr.io/pkg/bayests/man/add_posterior_coefficients.html" class="external-link">add_posterior_coefficients</a></code> estimates it like any other
+algorithm, the filter being part of the vendored BayesTS core. It consumes no
+random numbers, so two runs agree to the bit and a model estimated here and
+the same model estimated by the <code>bayests</code> command line over a file
+written with <code><a href="https://rdrr.io/pkg/bayests/man/write_to_hdf5.html" class="external-link">write_to_hdf5</a></code> give the same numbers rather than
+merely the same distribution. What comes back is a posterior rather than a
+chain: one row per period under <code>posterior$a$mean</code>,
+<code>posterior$a$cov</code>, <code>posterior$u_sigma$scale</code> and
+<code>posterior$df</code>, and no <code>coeffs</code> anywhere, because joining one
+draw per period would look like a sampled path and is not one.</p>
+<p><strong>A volatility break scales every shock from a known period on.</strong> With
+<code>volatility_break</code> the error covariance of period \(t\) is
+\(s_t^2 \Sigma\), as described for <code><a href="create_bvarmodel.html">create_bvarmodel</a></code> after Lenza and
+Primiceri (2022), and is available for constant coefficients and
+<code>error = "wishart"</code>. The differenced variables, the short-run regressors and
+the levels the cointegration term is built from are all divided by \(s_t\), which
+keeps the loadings, the cointegration space and the Wishart prior conjugate. The
+prior is <code>sigma$volatility</code> in <code><a href="add_priors.bvecmodel.html">add_priors.bvecmodel</a></code>, the draws are
+<code>posterior$volatility$coeffs</code>, and <code><a href="vec_to_var.html">vec_to_var</a></code> carries both the
+break and its draws over to the VAR in levels, whose log likelihood and forecasts
+are the VEC model's.</p>
+    </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>George, E. I., Sun, D., &amp; Ni, S. (2008). Bayesian stochastic search for VAR model
@@ -245,16 +311,26 @@ simulation for cointegrated models with priors on the cointegration space.
 <a href="https://doi.org/10.1080/07474930903382208" class="external-link">doi:10.1080/07474930903382208</a></p>
 <p>Korobilis, D. (2013). VAR forecasting using Bayesian variable selection.
 <em>Journal of Applied Econometrics, 28</em>(2), 204–230. <a href="https://doi.org/10.1002/jae.1271" class="external-link">doi:10.1002/jae.1271</a></p>
+<p>Lenza, M., &amp; Primiceri, G. E. (2022). How to estimate a vector autoregression after
+March 2020. <em>Journal of Applied Econometrics, 37</em>(4), 688–699.
+<a href="https://doi.org/10.1002/jae.2895" class="external-link">doi:10.1002/jae.2895</a></p>
 <p>Lütkepohl, H. (2006). <em>New introduction to multiple time series analysis</em> (2nd ed.). Berlin: Springer.</p>
+<p>Uhlig, H. (1997). Bayesian vector autoregressions with stochastic volatility.
+<em>Econometrica, 65</em>(1), 59–73. <a href="https://doi.org/10.2307/2171813" class="external-link">doi:10.2307/2171813</a></p>
+<p>West, M., &amp; Harrison, J. (1997). <em>Bayesian forecasting and dynamic models</em>
+(2nd ed.). New York: Springer.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>Other model set-up:
+    <div class="dont-index"><p><code><a href="bvartools_model.html">bvartools_model</a></code> describes the object this returns, element by element.</p>
+<p>Other model set-up:
+<code><a href="add_dummy_variables.bvarmodel.html">add_dummy_variables.bvarmodel()</a></code>,
 <code><a href="add_initial_values.bvarmodel.html">add_initial_values.bvarmodel()</a></code>,
 <code><a href="add_initial_values.bvecmodel.html">add_initial_values.bvecmodel()</a></code>,
+<code><a href="add_prior_options.html">add_prior_options()</a></code>,
 <code><a href="add_priors.bvarmodel.html">add_priors.bvarmodel()</a></code>,
 <code><a href="add_priors.bvecmodel.html">add_priors.bvecmodel()</a></code>,
-<code><a href="combine_models.html">combine_models()</a></code>,
+<code><a href="aggregation_weights.html">aggregation_weights()</a></code>,
 <code><a href="create_bvarmodel.html">create_bvarmodel()</a></code>,
 <code><a href="transform_variables.html">transform_variables()</a></code>,
 <code><a href="use_expanding_window.bvarmodel.html">use_expanding_window.bvarmodel()</a></code>,

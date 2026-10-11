@@ -7,7 +7,12 @@ autoregressive models.
 
 ``` r
 # S3 method for class 'bvarmodel'
-add_posterior_coefficients(object, posterior_function = NULL, ...)
+add_posterior_coefficients(
+  object,
+  posterior_function = NULL,
+  chains = NULL,
+  ...
+)
 ```
 
 ## Arguments
@@ -17,14 +22,26 @@ add_posterior_coefficients(object, posterior_function = NULL, ...)
   an object of class 'bvarmodel', usually, a result of a call to
   [`create_bvarmodel`](https://franzmohr.github.io/bvartools/reference/create_bvarmodel.md)
   in combination with
-  [`add_priors`](https://franzmohr.github.io/bvartools/reference/add_priors.md)
-  and
-  [`add_initial_values`](https://franzmohr.github.io/bvartools/reference/add_initial_values.md).
+  [`add_priors`](https://rdrr.io/pkg/bayests/man/add_priors.html) and
+  [`add_initial_values`](https://rdrr.io/pkg/bayests/man/add_initial_values.html).
 
 - posterior_function:
 
   the function to be applied to the model in argument `object`. If
-  `NULL` (default), internalal functions are used.
+  `NULL` (default), internal functions are used.
+
+- chains:
+
+  the number of chains to simulate. If `NULL` (default), the value in
+  `object$model$chains` is used, and one chain when there is none. Each
+  chain is the same simulation with a seed of its own – the first with
+  the seed of the model, so that one chain draws what it always has –
+  and the chains are pooled, one after the other, in the draws of
+  `posterior`, so that every later step uses all of them. Their number,
+  when above one, is stored in `object$model$chains`, and
+  [`chain_diagnostics`](https://rdrr.io/pkg/bayests/man/chain_diagnostics.html)
+  compares them. A `posterior_function` is called once per chain. Not
+  available for discounted models, whose posterior is not a chain.
 
 - ...:
 
@@ -65,6 +82,22 @@ row per draw and one column per parameter:
   for `error = "ald"`, the \\K\\ scales of the asymmetric Laplace
   distribution.
 
+- `y`:
+
+  for a model estimated from a panel not observed whole, the completed
+  panel, \\TK\\ columns ordered by period, and `constraints_inv` the
+  error precisions of its soft constraints. See
+  [`create_bvarmodel`](https://franzmohr.github.io/bvartools/reference/create_bvarmodel.md).
+
+- `mu`:
+
+  under a steady-state prior, the \\K\\ unconditional means. Under an
+  adaptive prior, `a` holds the scales of its groups in element
+  `shrinkage` and, for the horseshoe and the normal-gamma prior, the
+  scales of its coefficients in `local`; where the normal-gamma prior
+  draws \\\theta\\, its draws are in `theta`. See
+  [`add_prior_options`](https://franzmohr.github.io/bvartools/reference/add_prior_options.md).
+
 Elements that do not apply to a model are absent or `NULL`. Note that
 [`bvar`](https://franzmohr.github.io/bvartools/reference/bvar.md)
 expects draws in the transposed orientation.
@@ -75,17 +108,16 @@ Unless `posterior_function` is specified, the function forwards the
 model input to the package's own posterior functions.
 
 The internal samplers draw with the seed in `object$model$seed`, which
-[`add_initial_values`](https://franzmohr.github.io/bvartools/reference/add_initial_values.md)
-sets and
-[`add_seed`](https://franzmohr.github.io/bvartools/reference/add_seed.md)
+[`add_initial_values`](https://rdrr.io/pkg/bayests/man/add_initial_values.html)
+sets and [`add_seed`](https://rdrr.io/pkg/bayests/man/add_seed.html)
 replaces. R's random number generator is set to that seed, with R's
 default kinds, for the simulation and put back as it was afterwards. A
 call of [`set.seed()`](https://rdrr.io/r/base/Random.html) between
-[`add_initial_values()`](https://franzmohr.github.io/bvartools/reference/add_initial_values.md)
+[`add_initial_values()`](https://rdrr.io/pkg/bayests/man/add_initial_values.html)
 and this function therefore does not change the draws. A model without a
 seed draws from R's generator as it stands. A `posterior_function` is
 called as it is and decides itself what to do with the seed; see
-[`bayests_posterior`](https://franzmohr.github.io/bvartools/reference/bayests_posterior.md).
+[`bayests_posterior`](https://rdrr.io/pkg/bayests/man/bayests_posterior.html).
 
 A sampler that cannot run raises its error rather than returning
 something. The message names what about the input it could not work
@@ -94,7 +126,24 @@ or, in bgvars, a 'gvarmodel' – that ends the run on the first
 specification that fails, rather than leaving that one without a
 posterior and carrying it into whatever reads the results.
 
+With Student t errors (`student_t = TRUE` in
+[`create_bvarmodel`](https://franzmohr.github.io/bvartools/reference/create_bvarmodel.md)),
+`posterior$student_t` holds `df`, the draws of the degrees of freedom,
+and `lambda`, the draws of each period's mixing scale: one column per
+period, large where the period's shocks were.
+
+With a volatility break (`volatility_break` in
+[`create_bvarmodel`](https://franzmohr.github.io/bvartools/reference/create_bvarmodel.md)
+or
+[`create_bvecmodel`](https://franzmohr.github.io/bvartools/reference/create_bvecmodel.md)),
+`posterior$volatility$coeffs` holds the draws of the free scales,
+columns `s1`, `s2`, ..., one per period from the break on, and of `rho`,
+the rate their excess over one decays at after them.
+
 ## See also
+
+[`bvartools_model`](https://franzmohr.github.io/bvartools/reference/bvartools_model.md)
+describes the object this returns, element by element.
 
 Other posterior simulation:
 [`add_forecast_input.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_forecast_input.bvarmodel.md),
@@ -104,8 +153,7 @@ Other posterior simulation:
 [`add_posterior_forecasts.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/add_posterior_forecasts.bvecmodel.md),
 [`add_posterior_loglik.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_posterior_loglik.bvarmodel.md),
 [`add_posterior_loglik.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/add_posterior_loglik.bvecmodel.md),
-[`add_seed()`](https://franzmohr.github.io/bvartools/reference/add_seed.md),
-[`bayests_posterior()`](https://franzmohr.github.io/bvartools/reference/bayests_posterior.md),
+[`add_seed.bvarmodel()`](https://franzmohr.github.io/bvartools/reference/add_seed.bvarmodel.md),
 [`bvar()`](https://franzmohr.github.io/bvartools/reference/bvar.md),
 [`bvec()`](https://franzmohr.github.io/bvartools/reference/bvec.md),
 [`predict.bvecmodel()`](https://franzmohr.github.io/bvartools/reference/predict.bvecmodel.md)
